@@ -16,6 +16,7 @@
 */
 #include "VivaGraph.h"
 #include "PajeEntity.h"
+#include "PajeType.h"
 
 VivaGraph::VivaGraph (std::string conffile)
 {
