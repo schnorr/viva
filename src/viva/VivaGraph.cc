@@ -97,7 +97,7 @@ void VivaGraph::defineEdges (PajeContainer *container)
   std::vector<PajeType*>::iterator type;
   for (type = types.begin(); type != types.end(); type++){
     PajeLinkType *link_type = dynamic_cast<PajeLinkType*>(*type);
-    if (link_type && edgeTypes.count (link_type->name)){
+    if (link_type && edgeTypes.count (link_type->name())){
       std::vector<PajeEntity*> links;
       links = enumeratorOfEntitiesTypedInContainer (*type, container, startTime(), endTime());
       std::vector<PajeEntity*>::iterator link;
