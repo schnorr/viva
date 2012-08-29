@@ -9,16 +9,13 @@
 VivaApplication::VivaApplication( int &argc, char **argv) : QApplication(argc,argv)
 {
   setApplicationName("Viva");
-
-
-
   filename = arguments().at(1);
   configuration = arguments().at(2);
 }
 
 void VivaApplication::init (void)
 {
-  PajeFileReader *reader = new PajeFileReader (filename.toStdString(), NULL);
+  PajeFileReader *reader = new PajeFileReader (filename.toStdString());
   PajeEventDecoder *decoder = new PajeEventDecoder ();
   PajeSimulator *simulator = new PajeSimulator ();
   VivaGraph *vivagraph = new VivaGraph (configuration.toStdString());
