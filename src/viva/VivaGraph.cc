@@ -497,7 +497,7 @@ void VivaGraph::deleteNode (VivaNode *node)
 
 bool VivaGraph::shouldBePresent (PajeContainer *container)
 {
-  std::string name = container->type()->name;
+  std::string name = container->type()->name();
   if (nodeTypes.count (name)) return true;
 
   std::vector<PajeContainer*> vector;
