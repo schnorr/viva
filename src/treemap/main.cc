@@ -14,21 +14,17 @@
     You should have received a copy of the GNU Public License
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
-#include <QApplication>
-#include <QDesktopWidget>
-#include "VTWindow.h"
+#include "VTApplication.h"
 
 int main(int argc, char *argv[])
 {
-  QApplication app(argc, argv);
-  VTWindow window;
-  window.resize(window.sizeHint());
-  int desktopArea = QApplication::desktop()->width() *
-    QApplication::desktop()->height();
-  int widgetArea = window.width() * window.height();
-  if (((float)widgetArea / (float)desktopArea) < 0.75f)
-    window.show();
-  else
-    window.showMaximized();
+  QApplication::setAttribute( Qt::AA_X11InitThreads );
+  VTApplication app(argc, argv);
+  try {
+    app.init();
+  }catch (std::string exception){
+    std::cout << "Exception: " << exception << std::endl;
+    return 1;
+  }
   return app.exec();
 }
