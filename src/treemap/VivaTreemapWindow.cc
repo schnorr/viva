@@ -16,14 +16,15 @@
 */
 #include <QtGui>
 #include "VivaTreemapWindow.h"
-#include "VivaTreemapWidget.h"
+#include "VivaTreemapFrame.h"
 
 VivaTreemapWindow::VivaTreemapWindow (void)
 {
-  treemapWidget = new VivaTreemapWidget (this);
+  frame = new VivaTreemapFrame (this);
 
   QHBoxLayout *mainLayout = new QHBoxLayout;
-  mainLayout->addWidget(treemapWidget);
+  mainLayout->setMargin(0);
+  mainLayout->addWidget(frame);
   setLayout(mainLayout);
   setWindowTitle (tr("Treemap"));
 }
