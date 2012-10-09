@@ -16,6 +16,8 @@
 */
 #include "VTApplication.h"
 #include "VTWindow.h"
+#include "VTFrame.h"
+#include "VTWidget.h"
 
 VTApplication::VTApplication( int &argc, char **argv) : QApplication(argc,argv)
 {
@@ -40,6 +42,7 @@ void VTApplication::init (void)
 
   connectComponents (reader, decoder);
   connectComponents (decoder, simulator);
+  connectComponents (simulator, window->frame->widget);
 
   {
     PajeThreadReader *thread = new PajeThreadReader (reader);

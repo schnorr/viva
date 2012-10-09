@@ -17,8 +17,9 @@
 #ifndef __VIVA_TREEMAP_WIDGET_H
 #define __VIVA_TREEMAP_WIDGET_H
 #include <QGLWidget>
+#include <PajeComponent.h>
 
-class VTWidget : public QGLWidget
+class VTWidget : public QGLWidget, public PajeComponent
 {
   Q_OBJECT
 
@@ -35,6 +36,10 @@ protected:
   void resizeGL (int width, int height);
   void mousePressEvent (QMouseEvent *event);
   void mouseMoveEvent(QMouseEvent *event);
+
+protected: //from PajeComponent protocol
+  void hierarchyChanged (void);
+  void timeSelectionChanged (void);
 };
 
 #endif

@@ -22,17 +22,10 @@ VTFrame::VTFrame (QWidget *parent)
   : QFrame(parent)
 {
   setFrameStyle(Plain | NoFrame);
-  graphicsView = new VTWidget (this);
-//  graphicsView->setRenderHint(QPainter::Antialiasing, false);
-//  graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
-//  graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
-//  graphicsView->setViewportUpdateMode(QGraphicsView::SmartViewportUpdate);
-//  graphicsView->setTransformationAnchor(QGraphicsView::AnchorUnderMouse);
-
+  widget = new VTWidget (this);
   QBoxLayout *topLayout = new QBoxLayout (QBoxLayout::TopToBottom, this);
   topLayout->setMargin(0);
-  topLayout->addWidget (graphicsView);
-
+  topLayout->addWidget (widget);
   setLayout (topLayout);
 }
 

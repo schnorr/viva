@@ -14,24 +14,14 @@
     You should have received a copy of the GNU Public License
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef __VIVA_TREEMAP_WINDOW_H
-#define __VIVA_TREEMAP_WINDOW_H
-#include <QWidget>
+#include "VTWidget.h"
 
-class VTFrame;
-
-class VTWindow : public QWidget
+void VTWidget::hierarchyChanged (void)
 {
-  Q_OBJECT
+  std::cout << __FUNCTION__ << std::endl;
+}
 
-public:
-  VTWindow (void);
-
-protected:
-  void keyPressEvent (QKeyEvent *event);
-
-public:
-  VTFrame *frame;
-};
-
-#endif
+void VTWidget::timeSelectionChanged (void)
+{
+  std::cout << __FUNCTION__ << std::endl;
+}

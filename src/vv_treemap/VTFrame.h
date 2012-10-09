@@ -31,8 +31,8 @@ protected:
   void showEvent (QShowEvent *event);
   void resizeEvent (QResizeEvent *event);
 
-private:
-  VTWidget *graphicsView;
+public:
+  VTWidget *widget;
 };
 
 #endif
