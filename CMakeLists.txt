@@ -58,19 +58,15 @@ SET(TREEMAP_HEADERS
   src/vv_treemap/VTFrame.h
   src/vv_treemap/VTWindow.h
   src/vv_treemap/VTWidget.h)
-#  src/treemap/PajeTreemapFrame.h
-#  src/treemap/PajeTreemapView.h)
 SET(TREEMAP_SOURCES
   src/vv_treemap/main.cc
   src/vv_treemap/VTApplication.cc
   src/vv_treemap/VTFrame.cc
   src/vv_treemap/VTWindow.cc
   src/vv_treemap/VTWidget.cc
-  src/vv_treemap/VTWidget+Paje.cc)
-#  src/treemap/PajeTreemapFrame.cc
-#  src/treemap/PajeTreemapView.cc
-#  src/treemap/PajeTreemap.cc
-#  src/treemap/PajeTreemapItem.cc)
+  src/vv_treemap/VTWidget+Paje.cc
+  src/vv_treemap/VTWidget+Treemap.cc
+  src/vv_treemap/PajeTreemap.cc)
 
 # the cmake options
 OPTION(VIVA         "The Viva visualization tool (Qt4 version)" ON)

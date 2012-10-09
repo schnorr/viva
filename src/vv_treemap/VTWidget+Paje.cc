@@ -19,9 +19,18 @@
 void VTWidget::hierarchyChanged (void)
 {
   std::cout << __FUNCTION__ << std::endl;
+  this->recreate();
 }
 
 void VTWidget::timeSelectionChanged (void)
 {
   std::cout << __FUNCTION__ << std::endl;
+  if (!treemap){
+    this->recreate(); //to create treemap hierarchical data structure
+  }
+
+  treemap->timeSelectionChanged();
+
+  this->repopulate ();
+
 }

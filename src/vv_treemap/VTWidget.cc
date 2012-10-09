@@ -19,10 +19,12 @@
 VTWidget::VTWidget (QWidget *parent)
   : QGLWidget (QGLFormat (QGL::SampleBuffers), parent)
 {
+  treemap = NULL;
 }
 
 VTWidget::~VTWidget (void)
 {
+  delete treemap;
 }
 
 QSize VTWidget::minimumSizeHint() const

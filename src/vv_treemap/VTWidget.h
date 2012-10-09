@@ -18,6 +18,7 @@
 #define __VIVA_TREEMAP_WIDGET_H
 #include <QGLWidget>
 #include <PajeComponent.h>
+#include "PajeTreemap.h"
 
 class VTWidget : public QGLWidget, public PajeComponent
 {
@@ -40,6 +41,14 @@ protected:
 protected: //from PajeComponent protocol
   void hierarchyChanged (void);
   void timeSelectionChanged (void);
+
+private:
+  PajeTreemapNode *treemap;
+
+protected: //myself
+  void drawTreemap (PajeTreemap *treemap);//, PajeTreemapContainerItem *parent);
+  void recreate (void);
+  void repopulate (void);
 };
 
 #endif
