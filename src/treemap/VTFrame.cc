@@ -15,14 +15,14 @@
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
 #include <QtGui>
-#include "VivaTreemapFrame.h"
-#include "VivaTreemapWidget.h"
+#include "VTFrame.h"
+#include "VTWidget.h"
 
-VivaTreemapFrame::VivaTreemapFrame (QWidget *parent)
+VTFrame::VTFrame (QWidget *parent)
   : QFrame(parent)
 {
   setFrameStyle(Plain | NoFrame);
-  graphicsView = new VivaTreemapWidget (this);
+  graphicsView = new VTWidget (this);
 //  graphicsView->setRenderHint(QPainter::Antialiasing, false);
 //  graphicsView->setDragMode(QGraphicsView::RubberBandDrag);
 //  graphicsView->setOptimizationFlags(QGraphicsView::DontSavePainterState);
@@ -36,14 +36,14 @@ VivaTreemapFrame::VivaTreemapFrame (QWidget *parent)
   setLayout (topLayout);
 }
 
-VivaTreemapFrame::~VivaTreemapFrame (void)
+VTFrame::~VTFrame (void)
 {
 }
 
-void VivaTreemapFrame::showEvent ( QShowEvent * event )
+void VTFrame::showEvent ( QShowEvent * event )
 {
 }
 
-void VivaTreemapFrame::resizeEvent ( QResizeEvent * event )
+void VTFrame::resizeEvent ( QResizeEvent * event )
 {
 }

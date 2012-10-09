@@ -14,25 +14,27 @@
     You should have received a copy of the GNU Public License
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
-#include <QtGui>
-#include "VivaTreemapWindow.h"
-#include "VivaTreemapFrame.h"
+#ifndef __VIVA_TREEMAP_WIDGET_H
+#define __VIVA_TREEMAP_WIDGET_H
+#include <QGLWidget>
 
-VivaTreemapWindow::VivaTreemapWindow (void)
+class VTWidget : public QGLWidget
 {
-  frame = new VivaTreemapFrame (this);
+  Q_OBJECT
 
-  QHBoxLayout *mainLayout = new QHBoxLayout;
-  mainLayout->setMargin(0);
-  mainLayout->addWidget(frame);
-  setLayout(mainLayout);
-  setWindowTitle (tr("Treemap"));
-}
+public:
+  VTWidget (QWidget *parent = 0);
+  ~VTWidget (void);
 
-void VivaTreemapWindow::keyPressEvent(QKeyEvent *e)
-{
-  if (e->key() == Qt::Key_Escape)
-    close();
-  else
-    QWidget::keyPressEvent(e);
-}
+  QSize minimumSizeHint (void) const;
+  QSize sizeHint (void) const;
+
+protected:
+  void initializeGL (void);
+  void paintGL (void);
+  void resizeGL (int width, int height);
+  void mousePressEvent (QMouseEvent *event);
+  void mouseMoveEvent(QMouseEvent *event);
+};
+
+#endif

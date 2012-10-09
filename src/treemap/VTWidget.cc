@@ -14,29 +14,29 @@
     You should have received a copy of the GNU Public License
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
-#include "VivaTreemapWidget.h"
+#include "VTWidget.h"
 
-VivaTreemapWidget::VivaTreemapWidget (QWidget *parent)
+VTWidget::VTWidget (QWidget *parent)
   : QGLWidget (QGLFormat (QGL::SampleBuffers), parent)
 {
 }
 
-VivaTreemapWidget::~VivaTreemapWidget (void)
+VTWidget::~VTWidget (void)
 {
 }
 
-QSize VivaTreemapWidget::minimumSizeHint() const
+QSize VTWidget::minimumSizeHint() const
 {
   return QSize(50, 50);
 }
 
-QSize VivaTreemapWidget::sizeHint() const
+QSize VTWidget::sizeHint() const
 {
   return QSize(400, 400);
 }
 
 
-void VivaTreemapWidget::initializeGL()
+void VTWidget::initializeGL()
 {
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_CULL_FACE);
@@ -48,14 +48,14 @@ void VivaTreemapWidget::initializeGL()
   glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
 }
 
-void VivaTreemapWidget::paintGL()
+void VTWidget::paintGL()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glLoadIdentity();
   glTranslatef(0.0, 0.0, -10.0);
 }
 
-void VivaTreemapWidget::resizeGL(int width, int height)
+void VTWidget::resizeGL(int width, int height)
 {
   int side = qMin(width, height);
   glViewport((width - side) / 2, (height - side) / 2, side, side);
@@ -70,10 +70,10 @@ void VivaTreemapWidget::resizeGL(int width, int height)
   glMatrixMode(GL_MODELVIEW);
 }
 
-void VivaTreemapWidget::mousePressEvent(QMouseEvent *event)
+void VTWidget::mousePressEvent(QMouseEvent *event)
 {
 }
 
-void VivaTreemapWidget::mouseMoveEvent(QMouseEvent *event)
+void VTWidget::mouseMoveEvent(QMouseEvent *event)
 {
 }

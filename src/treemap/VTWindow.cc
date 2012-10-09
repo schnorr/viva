@@ -14,24 +14,25 @@
     You should have received a copy of the GNU Public License
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef __VIVA_TREEMAP_WINDOW_H
-#define __VIVA_TREEMAP_WINDOW_H
-#include <QWidget>
+#include <QtGui>
+#include "VTWindow.h"
+#include "VTFrame.h"
 
-class VivaTreemapFrame;
-
-class VivaTreemapWindow : public QWidget
+VTWindow::VTWindow (void)
 {
-  Q_OBJECT
+  frame = new VTFrame (this);
 
-public:
-  VivaTreemapWindow (void);
+  QHBoxLayout *mainLayout = new QHBoxLayout;
+  mainLayout->setMargin(0);
+  mainLayout->addWidget(frame);
+  setLayout(mainLayout);
+  setWindowTitle (tr("Treemap"));
+}
 
-protected:
-  void keyPressEvent (QKeyEvent *event);
-
-private:
-  VivaTreemapFrame *frame;
-};
-
-#endif
+void VTWindow::keyPressEvent(QKeyEvent *e)
+{
+  if (e->key() == Qt::Key_Escape)
+    close();
+  else
+    QWidget::keyPressEvent(e);
+}

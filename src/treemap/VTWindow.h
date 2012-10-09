@@ -14,27 +14,24 @@
     You should have received a copy of the GNU Public License
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
-#ifndef __VIVA_TREEMAP_WIDGET_H
-#define __VIVA_TREEMAP_WIDGET_H
-#include <QGLWidget>
+#ifndef __VIVA_TREEMAP_WINDOW_H
+#define __VIVA_TREEMAP_WINDOW_H
+#include <QWidget>
 
-class VivaTreemapWidget : public QGLWidget
+class VTFrame;
+
+class VTWindow : public QWidget
 {
   Q_OBJECT
 
 public:
-  VivaTreemapWidget (QWidget *parent = 0);
-  ~VivaTreemapWidget (void);
-
-  QSize minimumSizeHint (void) const;
-  QSize sizeHint (void) const;
+  VTWindow (void);
 
 protected:
-  void initializeGL (void);
-  void paintGL (void);
-  void resizeGL (int width, int height);
-  void mousePressEvent (QMouseEvent *event);
-  void mouseMoveEvent(QMouseEvent *event);
+  void keyPressEvent (QKeyEvent *event);
+
+private:
+  VTFrame *frame;
 };
 
 #endif

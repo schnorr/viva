@@ -18,21 +18,21 @@
 #define __VIVA_TREEMAP_FRAME_H
 #include <QFrame>
 
-class VivaTreemapWidget;
+class VTWidget;
 
-class VivaTreemapFrame : public QFrame
+class VTFrame : public QFrame
 {
   Q_OBJECT;
 public:
-  VivaTreemapFrame (QWidget *parent = 0);
-  ~VivaTreemapFrame (void);
+  VTFrame (QWidget *parent = 0);
+  ~VTFrame (void);
 
 protected:
   void showEvent (QShowEvent *event);
   void resizeEvent (QResizeEvent *event);
 
 private:
-  VivaTreemapWidget *graphicsView;
+  VTWidget *graphicsView;
 };
 
 #endif

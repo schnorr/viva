@@ -16,12 +16,12 @@
 */
 #include <QApplication>
 #include <QDesktopWidget>
-#include "VivaTreemapWindow.h"
+#include "VTWindow.h"
 
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
-  VivaTreemapWindow window;
+  VTWindow window;
   window.resize(window.sizeHint());
   int desktopArea = QApplication::desktop()->width() *
     QApplication::desktop()->height();
