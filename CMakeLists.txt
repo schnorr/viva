@@ -54,18 +54,19 @@ SET(VIVA_RESOURCES
 #
 # Treemap sources
 SET(TREEMAP_HEADERS
-  src/treemap/VTApplication.h
-  src/treemap/VTFrame.h
-  src/treemap/VTWindow.h
-  src/treemap/VTWidget.h)
+  src/vv_treemap/VTApplication.h
+  src/vv_treemap/VTFrame.h
+  src/vv_treemap/VTWindow.h
+  src/vv_treemap/VTWidget.h)
 #  src/treemap/PajeTreemapFrame.h
 #  src/treemap/PajeTreemapView.h)
 SET(TREEMAP_SOURCES
-  src/treemap/main.cc
-  src/treemap/VTApplication.cc
-  src/treemap/VTFrame.cc
-  src/treemap/VTWindow.cc
-  src/treemap/VTWidget.cc)
+  src/vv_treemap/main.cc
+  src/vv_treemap/VTApplication.cc
+  src/vv_treemap/VTFrame.cc
+  src/vv_treemap/VTWindow.cc
+  src/vv_treemap/VTWidget.cc
+  src/vv_treemap/VTWidget+Paje.cc)
 #  src/treemap/PajeTreemapFrame.cc
 #  src/treemap/PajeTreemapView.cc
 #  src/treemap/PajeTreemap.cc
