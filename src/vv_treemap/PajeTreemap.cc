@@ -22,6 +22,12 @@ PajeTreemap::PajeTreemap (PajeTreemap *parent, PajeComponent *filter, PajeContai
   this->_parent = parent;
   this->filter = filter;
   this->container = container;
+  if (parent != NULL){
+    this->d = parent->depth() + 1;
+  }else{
+    this->d = 0;
+  }
+  setMaxDepth (this->d - 1);
   _treemapValue = 0;
 }
 
@@ -55,7 +61,6 @@ PajeTreemapNode::PajeTreemapNode (PajeTreemap *parent, PajeComponent *filter, Pa
 
 void PajeTreemapNode::timeSelectionChanged (void)
 {
-  std::cout << container->name() << " = " << _treemapValue << std::endl;
   //clear and update the values because of the new time slice selection
   values.clear();
   values = filter->spatialIntegrationOfContainer (container);

@@ -32,11 +32,11 @@ public:
   QSize sizeHint (void) const;
 
 protected:
-  void initializeGL (void);
-  void paintGL (void);
-  void resizeGL (int width, int height);
   void mousePressEvent (QMouseEvent *event);
   void mouseMoveEvent(QMouseEvent *event);
+  void resizeEvent (QResizeEvent *event);
+  void wheelEvent (QWheelEvent *event);
+  void paintEvent(QPaintEvent *event);
 
 protected: //from PajeComponent protocol
   void hierarchyChanged (void);
@@ -44,11 +44,13 @@ protected: //from PajeComponent protocol
 
 private:
   PajeTreemapNode *treemap;
+  int currentDepth;
 
 protected: //myself
-  void drawTreemap (PajeTreemap *treemap);//, PajeTreemapContainerItem *parent);
+  void drawTreemap (QPainter *painter, PajeTreemap *treemap);
   void recreate (void);
   void repopulate (void);
+  void redraw (QPainter *painter);
 };
 
 #endif

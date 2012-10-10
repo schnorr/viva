@@ -21,6 +21,10 @@
 
 class PajeTreemap
 {
+private:
+  unsigned int d; //depth
+  unsigned int maxd; //max depth
+
 public:
   PajeContainer *container;
 
@@ -33,6 +37,9 @@ protected:
 public:
   PajeTreemap (PajeTreemap *parent, PajeComponent *filter, PajeContainer *container);
   void setRect (QRectF bb) { this->bb = bb; };
+  unsigned int depth (void) { return d; };
+  unsigned int maxDepth (void) { return maxd; };
+  void setMaxDepth (unsigned int m) { maxd = m; if (_parent) _parent->setMaxDepth (m); };
   QRectF rect (void) { return bb; };
   double treemapValue (void) const { return _treemapValue; };
   virtual PajeTreemap *parent (void) const { return _parent; };

@@ -16,27 +16,26 @@
 */
 #include "VTWidget.h"
 
-void VTWidget::drawTreemap (PajeTreemap *t)
+void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
 {
-
-  // PajeTreemapContainerItem *item = new PajeTreemapContainerItem (treemap, parent, this);
-  // if (!parent){
-  //   scene.addItem (item);
-  // }
-
-  //aggregated children
-  std::vector<PajeTreemap*> valueChildren = t->valueChildren();
   std::vector<PajeTreemap*>::iterator it;
-  for (it = valueChildren.begin(); it != valueChildren.end(); it++){
-//    PajeTreemapValueItem *vitem = new PajeTreemapValueItem (*it, NULL, this);
-//    scene.addItem (vitem);
-  }
 
-  //normal children
-  std::vector<PajeTreemap*> children = t->children();
-  for (it = children.begin(); it != children.end(); it++){
-    PajeTreemap *child = *it;
-    this->drawTreemap (child);
+  if (t->depth() < currentDepth){
+    //just recurse on normal children
+    std::vector<PajeTreemap*> children = t->children();
+    for (it = children.begin(); it != children.end(); it++){
+      PajeTreemap *child = *it;
+      this->drawTreemap (painter, child);
+    }
+  }else{
+    painter->drawRect (t->rect());
+    //aggregated children
+    std::vector<PajeTreemap*> valueChildren = t->valueChildren();
+    for (it = valueChildren.begin(); it != valueChildren.end(); it++){
+      PajeColor *color = (*it)->type()->color();
+      QBrush brush = QBrush (QColor (color->r*255, color->g*255, color->b*255, color->a*255));
+      painter->fillRect ((*it)->rect(), brush);
+    }
   }
 }
 
@@ -55,13 +54,14 @@ void VTWidget::repopulate (void)
   }
 
   QSize s = size();
+  std::cout << "Size: " << s.width() << " " << s.height() << std::endl;
   QRectF bb = QRectF(QPointF(0,0), s);
+
   treemap->setRect (bb);
   treemap->calculateTreemapWithFactor ((bb.width() * bb.height())/treemap->treemapValue());
+}
 
-  //clear
-  // scene.clear();
-
-  //scene.setSceneRect (treemap->rect());
-  //this->drawTreemap (treemap, NULL);
+void VTWidget::redraw (QPainter *painter)
+{
+  drawTreemap (painter, treemap);
 }

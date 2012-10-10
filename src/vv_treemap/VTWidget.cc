@@ -20,6 +20,7 @@ VTWidget::VTWidget (QWidget *parent)
   : QGLWidget (QGLFormat (QGL::SampleBuffers), parent)
 {
   treemap = NULL;
+  currentDepth = 0;
 }
 
 VTWidget::~VTWidget (void)
@@ -37,39 +38,21 @@ QSize VTWidget::sizeHint() const
   return QSize(400, 400);
 }
 
-
-void VTWidget::initializeGL()
+void VTWidget::resizeEvent (QResizeEvent *event)
 {
-  glEnable(GL_DEPTH_TEST);
-  glEnable(GL_CULL_FACE);
-  glShadeModel(GL_SMOOTH);
-  glEnable(GL_LIGHTING);
-  glEnable(GL_LIGHT0);
-  glEnable(GL_MULTISAMPLE);
-  static GLfloat lightPosition[4] = { 0.5, 5.0, 7.0, 1.0 };
-  glLightfv(GL_LIGHT0, GL_POSITION, lightPosition);
+  repopulate();
 }
 
-void VTWidget::paintGL()
+void VTWidget::paintEvent(QPaintEvent *event)
 {
-  glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  glLoadIdentity();
-  glTranslatef(0.0, 0.0, -10.0);
-}
+  QBrush whiteBackground = QBrush(QColor(255, 255, 255));
 
-void VTWidget::resizeGL(int width, int height)
-{
-  int side = qMin(width, height);
-  glViewport((width - side) / 2, (height - side) / 2, side, side);
-
-  glMatrixMode(GL_PROJECTION);
-  glLoadIdentity();
-#ifdef QT_OPENGL_ES_1
-  glOrthof(-0.5, +0.5, -0.5, +0.5, 4.0, 15.0);
-#else
-  glOrtho(-0.5, +0.5, -0.5, +0.5, 4.0, 15.0);
-#endif
-  glMatrixMode(GL_MODELVIEW);
+  QPainter painter;
+  painter.begin(this);
+  painter.setRenderHint(QPainter::Antialiasing);
+  painter.fillRect(event->rect(), whiteBackground);
+  redraw (&painter);
+  painter.end();
 }
 
 void VTWidget::mousePressEvent(QMouseEvent *event)
@@ -78,4 +61,16 @@ void VTWidget::mousePressEvent(QMouseEvent *event)
 
 void VTWidget::mouseMoveEvent(QMouseEvent *event)
 {
+}
+
+void VTWidget::wheelEvent (QWheelEvent *event)
+{
+  if (event->delta() > 0){
+    currentDepth++;
+    if (currentDepth > treemap->maxDepth()) currentDepth = treemap->maxDepth();
+  }else{
+    currentDepth--;
+    if (currentDepth < 0) currentDepth = 0;
+  }
+  update();
 }
