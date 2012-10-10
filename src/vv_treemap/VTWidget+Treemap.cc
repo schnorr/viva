@@ -28,7 +28,6 @@ void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
       this->drawTreemap (painter, child);
     }
   }else{
-    painter->drawRect (t->rect());
     //aggregated children
     std::vector<PajeTreemap*> valueChildren = t->valueChildren();
     for (it = valueChildren.begin(); it != valueChildren.end(); it++){
@@ -37,6 +36,11 @@ void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
       painter->fillRect ((*it)->rect(), brush);
     }
   }
+
+  QPen pen = QPen();
+  pen.setWidth (0+(treemap->maxDepth()-t->depth()));
+  painter->setPen (pen);
+  painter->drawRect (t->rect());
 }
 
 void VTWidget::recreate (void)
