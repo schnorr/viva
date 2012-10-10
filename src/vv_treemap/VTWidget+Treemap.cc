@@ -38,8 +38,10 @@ void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
   }
 
   QPen pen = QPen();
-  pen.setWidth (0+(treemap->maxDepth()-t->depth()));
-  painter->setPen (pen);
+  if (t->depth() >= 1){
+    pen.setWidth (treemap->maxDepth() - t->depth());
+    painter->setPen (pen);
+  }
   painter->drawRect (t->rect());
 }
 
