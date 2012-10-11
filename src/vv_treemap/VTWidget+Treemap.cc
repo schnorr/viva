@@ -59,12 +59,12 @@ void VTWidget::repopulate (void)
     this->recreate (); //to create something to populate
   }
 
-  QSize s = size();
-  std::cout << "Size: " << s.width() << " " << s.height() << std::endl;
-  QRectF bb = QRectF(QPointF(0,0), s);
-
-  treemap->setRect (bb);
-  treemap->calculateTreemapWithFactor ((bb.width() * bb.height())/treemap->treemapValue());
+  if (selectionEndTime() - selectionStartTime() != 0){
+    QSize s = size();
+    QRectF bb = QRectF(QPointF(0,0), s);
+    treemap->setRect (bb);
+    treemap->calculateTreemapWithFactor ((bb.width() * bb.height())/treemap->treemapValue());
+  }
 }
 
 void VTWidget::redraw (QPainter *painter)
