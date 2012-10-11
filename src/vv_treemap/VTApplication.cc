@@ -18,6 +18,8 @@
 #include "VTWindow.h"
 #include "VTFrame.h"
 #include "VTWidget.h"
+#include <VTSWindow.h>
+#include <VTSFrame.h>
 
 VTApplication::VTApplication( int &argc, char **argv) : QApplication(argc,argv)
 {
@@ -31,6 +33,7 @@ VTApplication::VTApplication( int &argc, char **argv) : QApplication(argc,argv)
 void VTApplication::init (void)
 {
   window = new VTWindow ();
+  tswindow = new VTSWindow ();
 
   if (filename.isEmpty()){
     reader = new PajeFileReader ();
@@ -42,7 +45,8 @@ void VTApplication::init (void)
 
   connectComponents (reader, decoder);
   connectComponents (decoder, simulator);
-  connectComponents (simulator, window->frame->widget);
+  connectComponents (simulator, tswindow->frame);
+  connectComponents (tswindow->frame, window->frame->widget);
 
   {
     PajeThreadReader *thread = new PajeThreadReader (reader);
@@ -51,6 +55,7 @@ void VTApplication::init (void)
   }
 
   window->show();
+  tswindow->show();
 }
 
 void VTApplication::connectComponents (PajeComponent *c1, PajeComponent *c2)

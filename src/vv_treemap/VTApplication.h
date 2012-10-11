@@ -24,6 +24,7 @@
 #include "PajeSimulator.h"
 
 class VTWindow;
+class VTSWindow;
 
 class VTApplication : public QApplication
 {
@@ -35,6 +36,7 @@ private:
   PajeSimulator *simulator;
 
   VTWindow *window;
+  VTSWindow *tswindow;
   QString filename;
   void disconnectComponents (PajeComponent *c1, PajeComponent *c2);
   void connectComponents (PajeComponent *c1, PajeComponent *c2);
