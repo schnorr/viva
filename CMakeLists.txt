@@ -68,9 +68,18 @@ SET(TREEMAP_SOURCES
   src/vv_treemap/VTWidget+Treemap.cc
   src/vv_treemap/PajeTreemap.cc)
 
+#
+# Utils (Qt-based) sources
+SET(UTILS_HEADERS
+  src/utils/VTSFrame.h
+  src/utils/VTSWindow.h)
+SET(UTILS_SOURCES
+  src/utils/VTSFrame.cc
+  src/utils/VTSWindow.cc)
+
 # the cmake options
 OPTION(VIVA         "The Viva visualization tool (Qt4 version)" ON)
-OPTION(TREEMAP      "The Experimental treemap visualization technique (Qt4 version)" OFF)
+OPTION(VV_TREEMAP      "The vv_treemap visualization tool" OFF)
 
 FIND_PACKAGE(Qt4 REQUIRED QtCore QtGui QtOpenGl)
 FIND_PACKAGE(GLUT REQUIRED)
@@ -108,12 +117,13 @@ ENDIF(VIVA)
 #
 # TREEMAP
 #
-IF(TREEMAP)
+IF(VV_TREEMAP)
   QT4_WRAP_CPP(TREEMAP_HEADERS_MOC ${TREEMAP_HEADERS})
   QT4_ADD_RESOURCES(TREEMAP_RESOURCES_RCC ${TREEMAP_RESOURCES})
   INCLUDE(${QT_USE_FILE})
   ADD_DEFINITIONS(${QT_DEFINITIONS})
   INCLUDE_DIRECTORIES(treemap ${PAJENG_INCLUDE_PATH})
+  INCLUDE_DIRECTORIES(treemap src/utils/)
   LINK_DIRECTORIES (${PAJENG_LIBRARY_PATH})
 
   ADD_EXECUTABLE(vv_treemap ${TREEMAP_SOURCES} ${TREEMAP_HEADERS_MOC} ${TREEMAP_RESOURCES_RCC})
@@ -123,5 +133,13 @@ IF(TREEMAP)
   TARGET_LINK_LIBRARIES(vv_treemap ${OPENGL_glu_LIBRARY})
   TARGET_LINK_LIBRARIES(vv_treemap paje)
   TARGET_LINK_LIBRARIES(vv_treemap pajeutils)
+  TARGET_LINK_LIBRARIES(vv_treemap viva_utils_library)
   INSTALL(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/vv_treemap DESTINATION bin)  
-ENDIF(TREEMAP)
+ENDIF(VV_TREEMAP)
+
+#
+# Utils
+#
+QT4_WRAP_CPP(UTILS_HEADERS_MOC ${UTILS_HEADERS})
+ADD_LIBRARY(viva_utils_library SHARED ${UTILS_SOURCES} ${UTILS_HEADERS_MOC})
+SET_TARGET_PROPERTIES(viva_utils_library PROPERTIES OUTPUT_NAME vivautils)
