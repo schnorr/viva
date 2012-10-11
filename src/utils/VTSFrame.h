@@ -22,6 +22,7 @@
 class QLabel;
 class QSlider;
 class QLineEdit;
+class QCheckBox;
 
 class VTSFrame : public QFrame, public PajeComponent
 {
@@ -32,12 +33,15 @@ public:
   ~VTSFrame (void);
 
 private:
-  QLabel *startLabel;
+  QLabel *startTimeLabel;
+  QLabel *endTimeLabel;
+
   QSlider *startSlider;
+  QCheckBox *startCheck;
   QLineEdit *startText;
 
-  QLabel *sizeLabel;
   QSlider *sizeSlider;
+  QCheckBox *sizeCheck;
   QLineEdit *sizeText;
 
   QLabel *forwardLabel;
@@ -47,6 +51,25 @@ private:
   QLabel *frequencyLabel;
   QSlider *frequencySlider;
   QLineEdit *frequencyText;
+
+public slots:
+  void startSliderMoved (int value);
+  void startCheckChanged (int state);
+  void sizeSliderMoved (int value);
+  void sizeCheckChanged (int state);
+  void startSizeSliderReleased (int value);
+
+protected: //from PajeComponent protocol
+  void timeSelectionChanged (void);
+  void timeLimitsChanged (void);
+  void setSelectionStartEndTime (double start, double end);
+  double selectionStartTime (void);
+  double selectionEndTime (void);
+
+private:
+  double selectionStart;
+  double selectionEnd;
+  void updateGUI (void);
 };
 
 #endif
