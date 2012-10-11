@@ -31,8 +31,9 @@ VTWindow::VTWindow (void)
 
 void VTWindow::keyPressEvent(QKeyEvent *e)
 {
-  if (e->key() == Qt::Key_Escape)
-    close();
-  else
+  if (e->key() == Qt::Key_Escape){
+    qApp->exit(0);
+  }else{
     QWidget::keyPressEvent(e);
+  }
 }
