@@ -25,4 +25,5 @@ void VTWidget::timeSelectionChanged (void)
 {
   treemap->timeSelectionChanged();
   repopulate ();
+  update();
 }
