@@ -25,7 +25,7 @@ EntropyDialog::EntropyDialog (PajeAggregatedDict variables,
   : QDialog (parent)
 {
   pInput = new QLineEdit;
-  pInput->setValidator (new QDoubleValidator(0, 1, 2, pInput));
+  pInput->setValidator (new QDoubleValidator(0, 1, 4, pInput));
   QString str;
   str.setNum(startingP);
   pInput->setText (str);
