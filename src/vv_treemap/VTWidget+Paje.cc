@@ -24,6 +24,7 @@ void VTWidget::hierarchyChanged (void)
 void VTWidget::timeSelectionChanged (void)
 {
   treemap->timeSelectionChanged();
+  rootInstance()->computeGainDivergence(selectionStartTime(), selectionEndTime());
   repopulate ();
   update();
 }

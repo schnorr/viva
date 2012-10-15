@@ -25,6 +25,7 @@ VTWidget::VTWidget (QWidget *parent)
   setFocusPolicy (Qt::StrongFocus);
   entropyP = 0.3;
   entropyVariable = NULL;
+  zoomType = GlobalZoom;
 }
 
 VTWidget::~VTWidget (void)
@@ -82,8 +83,6 @@ void VTWidget::wheelEvent (QWheelEvent *event)
 void VTWidget::keyPressEvent(QKeyEvent *event)
 {
   if (event->key() == Qt::Key_E){
-    rootInstance()->computeGainDivergence(selectionStartTime(), selectionEndTime());
-
     bool ok = false;
     EntropyDialog dialog (spatialIntegrationOfContainer(rootInstance()), entropyP, entropyVariable, this);
     dialog.exec();
@@ -91,18 +90,24 @@ void VTWidget::keyPressEvent(QKeyEvent *event)
     entropyVariable = dialog.type();
     if (dialog.result() == QDialog::Accepted && entropyVariable){
       std::cout << "Considering a p: " << entropyP << " and variable: " << entropyVariable->description() << std::endl;
-      std::pair<double,std::vector<PajeContainer*> > bestAgg = findBestAggregation (rootInstance(), entropyVariable, entropyP);
-      std::cout << "-> maxRIC = " << bestAgg.first << std::endl;
+      bestAggregation = findBestAggregation (rootInstance(), entropyVariable, entropyP);
+      std::cout << "-> maxRIC = " << bestAggregation.first << std::endl;
       std::vector<PajeContainer*>::iterator it;
-      std::cout << "-> bestAgg = {";
-      for (it = bestAgg.second.begin(); it != bestAgg.second.end(); it++){
+      std::cout << "-> bestAggregation = {";
+      for (it = bestAggregation.second.begin(); it != bestAggregation.second.end(); it++){
         PajeContainer *c = *it;
         std::cout << c->name() << ", ";
       }
       std::cout << "}" << std::endl;
-    }else{
-      std::cout << "dialog was rejected" << std::endl;
+      zoomType = EntropyZoom;
+      update();
     }
+  }else if(event->key() == Qt::Key_G){
+    zoomType = GlobalZoom;
+    update();
+  }else if(event->key() == Qt::Key_L){
+    zoomType = LocalZoom;
+    update();
   }else{
     QWidget::keyPressEvent(event);
   }

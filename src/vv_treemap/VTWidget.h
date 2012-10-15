@@ -46,8 +46,12 @@ protected: //from PajeComponent protocol
 private:
   PajeTreemapNode *treemap;
   int currentDepth;
+  enum {GlobalZoom, LocalZoom, EntropyZoom} zoomType;
+
+  //entropy properties
   double entropyP;
   PajeAggregatedType *entropyVariable;
+  std::pair<double,std::vector<PajeContainer*> > bestAggregation;
 
 protected: //myself
   void drawTreemap (QPainter *painter, PajeTreemap *treemap);

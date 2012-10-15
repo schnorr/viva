@@ -18,24 +18,55 @@
 
 void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
 {
+
   std::vector<PajeTreemap*>::iterator it;
 
-  if (t->depth() < currentDepth){
-    //just recurse on normal children
-    std::vector<PajeTreemap*> children = t->children();
-    for (it = children.begin(); it != children.end(); it++){
-      PajeTreemap *child = *it;
-      this->drawTreemap (painter, child);
+//GlobalZoom
+  if (zoomType == GlobalZoom){
+    if (t->depth() < currentDepth){
+      //just recurse on normal children
+      std::vector<PajeTreemap*> children = t->children();
+      for (it = children.begin(); it != children.end(); it++){
+        PajeTreemap *child = *it;
+        this->drawTreemap (painter, child);
+      }
+    }else{
+      //aggregated children
+      std::vector<PajeTreemap*> valueChildren = t->valueChildren();
+      for (it = valueChildren.begin(); it != valueChildren.end(); it++){
+        PajeColor *color = (*it)->type()->color();
+        QBrush brush = QBrush (QColor (color->r*255, color->g*255, color->b*255, color->a*255));
+        painter->fillRect ((*it)->rect(), brush);
+      }
     }
-  }else{
-    //aggregated children
-    std::vector<PajeTreemap*> valueChildren = t->valueChildren();
-    for (it = valueChildren.begin(); it != valueChildren.end(); it++){
-      PajeColor *color = (*it)->type()->color();
-      QBrush brush = QBrush (QColor (color->r*255, color->g*255, color->b*255, color->a*255));
-      painter->fillRect ((*it)->rect(), brush);
+
+//EntropyZoom
+  }else if (zoomType == EntropyZoom){
+    std::vector<PajeContainer*>::iterator found = std::find (bestAggregation.second.begin(), bestAggregation.second.end(), t->container);
+    if (found == bestAggregation.second.end()){
+
+      //just recurse on normal children
+      std::vector<PajeTreemap*> children = t->children();
+      for (it = children.begin(); it != children.end(); it++){
+        PajeTreemap *child = *it;
+        this->drawTreemap (painter, child);
+      }
+
+    }else{
+
+  // std::cout << "Drawing " << t->container->name() << std::endl;
+
+      //aggregated children
+      std::vector<PajeTreemap*> valueChildren = t->valueChildren();
+      for (it = valueChildren.begin(); it != valueChildren.end(); it++){
+        PajeColor *color = (*it)->type()->color();
+        QBrush brush = QBrush (QColor (color->r*255, color->g*255, color->b*255, color->a*255));
+        painter->fillRect ((*it)->rect(), brush);
+      }
+
     }
-  }
+  }  
+
 
   QPen pen = QPen();
   if (t->depth() >= 1){
@@ -43,6 +74,7 @@ void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
     painter->setPen (pen);
   }
   painter->drawRect (t->rect());
+
 }
 
 void VTWidget::recreate (void)
