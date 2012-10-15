@@ -57,7 +57,8 @@ SET(TREEMAP_HEADERS
   src/vv_treemap/VTApplication.h
   src/vv_treemap/VTFrame.h
   src/vv_treemap/VTWindow.h
-  src/vv_treemap/VTWidget.h)
+  src/vv_treemap/VTWidget.h
+  src/vv_treemap/EntropyDialog.h)
 SET(TREEMAP_SOURCES
   src/vv_treemap/main.cc
   src/vv_treemap/VTApplication.cc
@@ -66,7 +67,8 @@ SET(TREEMAP_SOURCES
   src/vv_treemap/VTWidget.cc
   src/vv_treemap/VTWidget+Paje.cc
   src/vv_treemap/VTWidget+Treemap.cc
-  src/vv_treemap/PajeTreemap.cc)
+  src/vv_treemap/PajeTreemap.cc
+  src/vv_treemap/EntropyDialog.cc)
 
 #
 # Utils (Qt-based) sources

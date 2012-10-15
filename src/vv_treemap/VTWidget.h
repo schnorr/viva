@@ -37,6 +37,7 @@ protected:
   void resizeEvent (QResizeEvent *event);
   void wheelEvent (QWheelEvent *event);
   void paintEvent(QPaintEvent *event);
+  void keyPressEvent(QKeyEvent *event);
 
 protected: //from PajeComponent protocol
   void hierarchyChanged (void);
@@ -45,6 +46,8 @@ protected: //from PajeComponent protocol
 private:
   PajeTreemapNode *treemap;
   int currentDepth;
+  double entropyP;
+  PajeAggregatedType *entropyVariable;
 
 protected: //myself
   void drawTreemap (QPainter *painter, PajeTreemap *treemap);

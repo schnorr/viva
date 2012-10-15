@@ -15,12 +15,16 @@
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
 #include "VTWidget.h"
+#include "EntropyDialog.h"
 
 VTWidget::VTWidget (QWidget *parent)
   : QGLWidget (QGLFormat (QGL::SampleBuffers), parent)
 {
   treemap = NULL;
   currentDepth = 0;
+  setFocusPolicy (Qt::StrongFocus);
+  entropyP = 0.3;
+  entropyVariable = NULL;
 }
 
 VTWidget::~VTWidget (void)
@@ -73,4 +77,33 @@ void VTWidget::wheelEvent (QWheelEvent *event)
     if (currentDepth < 0) currentDepth = 0;
   }
   update();
+}
+
+void VTWidget::keyPressEvent(QKeyEvent *event)
+{
+  if (event->key() == Qt::Key_E){
+    rootInstance()->computeGainDivergence(selectionStartTime(), selectionEndTime());
+
+    bool ok = false;
+    EntropyDialog dialog (spatialIntegrationOfContainer(rootInstance()), entropyP, entropyVariable, this);
+    dialog.exec();
+    entropyP = dialog.p();
+    entropyVariable = dialog.type();
+    if (dialog.result() == QDialog::Accepted && entropyVariable){
+      std::cout << "Considering a p: " << entropyP << " and variable: " << entropyVariable->description() << std::endl;
+      std::pair<double,std::vector<PajeContainer*> > bestAgg = findBestAggregation (rootInstance(), entropyVariable, entropyP);
+      std::cout << "-> maxRIC = " << bestAgg.first << std::endl;
+      std::vector<PajeContainer*>::iterator it;
+      std::cout << "-> bestAgg = {";
+      for (it = bestAgg.second.begin(); it != bestAgg.second.end(); it++){
+        PajeContainer *c = *it;
+        std::cout << c->name() << ", ";
+      }
+      std::cout << "}" << std::endl;
+    }else{
+      std::cout << "dialog was rejected" << std::endl;
+    }
+  }else{
+    QWidget::keyPressEvent(event);
+  }
 }

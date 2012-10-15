@@ -42,10 +42,12 @@ void VTApplication::init (void)
   }
   decoder = new PajeEventDecoder ();
   simulator = new PajeSimulator ();
+  entropy = new PajeEntropy ();
 
   connectComponents (reader, decoder);
   connectComponents (decoder, simulator);
-  connectComponents (simulator, tswindow->frame);
+  connectComponents (simulator, entropy);
+  connectComponents (entropy, tswindow->frame);
   connectComponents (tswindow->frame, window->frame->widget);
 
   {
