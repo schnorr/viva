@@ -42,8 +42,8 @@ protected: //from QAbstractItemModel
 
 private:
   QPajeTypeFilter *provider;
-  std::set<PajeType*> hiddenTypes;
-  std::map<PajeType*,std::set<PajeValue*> > hiddenValues;
+  std::set<PajeType*> _hiddenTypes;
+  std::map<PajeType*,std::set<PajeValue*> > _hiddenValues;
 
   bool typeIsHidden (PajeType *type) const;
   bool valueIsHidden (PajeValue *value) const;
@@ -52,6 +52,10 @@ private:
   void showType (PajeType *type);
   void hideValue (PajeValue *value);
   void showValue (PajeValue *value);
+
+public:
+  std::set<PajeType*> hiddenTypes (void);
+  std::set<PajeValue*> hiddenValues (PajeType *type);
 };
 
 #endif

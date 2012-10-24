@@ -24,8 +24,8 @@ QPajeTypeModel::QPajeTypeModel (QPajeTypeFilter *provider, QObject *parent)
 
 QPajeTypeModel::~QPajeTypeModel (void)
 {
-  hiddenTypes.clear();
-  hiddenValues.clear();
+  _hiddenTypes.clear();
+  _hiddenValues.clear();
 }
 
 Qt::ItemFlags QPajeTypeModel::flags(const QModelIndex &index) const
@@ -139,7 +139,7 @@ QModelIndex QPajeTypeModel::index(int row, int column, const QModelIndex &parent
 
   if (provider->isContainerType (type)){
     int i;
-    std::vector<PajeType*> children = provider->containedTypesForContainerType (type);
+    std::vector<PajeType*> children = provider->containedTypes (type);
     std::vector<PajeType*>::iterator c;
     for (i = 0, c = children.begin(); c != children.end(); i++, c++){
       if (i == row) break;
@@ -147,7 +147,7 @@ QModelIndex QPajeTypeModel::index(int row, int column, const QModelIndex &parent
     return createIndex (row, column, *c);    
   }else{
     int i;
-    std::vector<PajeValue*> children = provider->valuesForEntityType (type);
+    std::vector<PajeValue*> children = provider->valuesForType (type);
     std::vector<PajeValue*>::iterator c;
     for (i = 0, c = children.begin(); c != children.end(); i++, c++){
       if (i == row) break;
@@ -185,7 +185,7 @@ QModelIndex QPajeTypeModel::parent(const QModelIndex &index) const
 
   int row = -1;
   std::vector<PajeType*>::iterator parentSibling;
-  std::vector<PajeType*> childrenType = provider->containedTypesForContainerType (parentParentType);
+  std::vector<PajeType*> childrenType = provider->containedTypes (parentParentType);
   for (parentSibling = childrenType.begin(); parentSibling != childrenType.end(); parentSibling++){
     if (*parentSibling == parentType){
       row = std::distance (childrenType.begin(), parentSibling);
@@ -198,7 +198,7 @@ int QPajeTypeModel::rowCount(const QModelIndex &parent) const
 {
   if (parent.isValid() == false){
     PajeType *parentType = provider->rootEntityType();
-    std::vector<PajeType*> childrenType = provider->containedTypesForContainerType (parentType);
+    std::vector<PajeType*> childrenType = provider->containedTypes (parentType);
     return childrenType.size();
   }
 
@@ -207,10 +207,10 @@ int QPajeTypeModel::rowCount(const QModelIndex &parent) const
   if (parentType){
     int ret;
     if (provider->isContainerType (parentType)){
-      std::vector<PajeType*> childrenType = provider->containedTypesForContainerType (parentType);
+      std::vector<PajeType*> childrenType = provider->containedTypes (parentType);
       ret = childrenType.size();
     }else{
-      std::vector<PajeValue*> childrenValue = provider->valuesForEntityType (parentType);
+      std::vector<PajeValue*> childrenValue = provider->valuesForType (parentType);
       ret = childrenValue.size();
     }
     return ret;
@@ -227,7 +227,7 @@ int QPajeTypeModel::columnCount(const QModelIndex &parent) const
 bool QPajeTypeModel::typeIsHidden (PajeType *type) const
 {
   if (!type) return false;
-  if (hiddenTypes.count(type)) return true;
+  if (_hiddenTypes.count(type)) return true;
   return false;
 }
 
@@ -235,38 +235,48 @@ bool QPajeTypeModel::valueIsHidden (PajeValue *value) const
 {
   if (!value) return false;
   std::map<PajeType*,std::set<PajeValue*> >::const_iterator it;
-  it = hiddenValues.find (value->type());
-  if (it != hiddenValues.end() && (*it).second.count (value)) return true;
+  it = _hiddenValues.find (value->type());
+  if (it != _hiddenValues.end() && (*it).second.count (value)) return true;
   else return false;
 }
 
 void QPajeTypeModel::hideType (PajeType *type)
 {
   if (!type) return;
-  hiddenTypes.insert(type);
+  _hiddenTypes.insert(type);
   provider->typeChanged (type);
 }
 
 void QPajeTypeModel::showType (PajeType *type)
 {
   if (!type) return;
-  hiddenTypes.erase(type);
+  _hiddenTypes.erase(type);
   provider->typeChanged (type);
 }
 
 void QPajeTypeModel::hideValue (PajeValue *value)
 {
   if (!value) return;
-  if (!hiddenValues.count(value->type())){
-    hiddenValues[value->type()] = std::set<PajeValue*>();
+  if (!_hiddenValues.count(value->type())){
+    _hiddenValues[value->type()] = std::set<PajeValue*>();
   }
-  hiddenValues[value->type()].insert(value);
+  _hiddenValues[value->type()].insert(value);
   provider->valueChanged (value);
 }
 
 void QPajeTypeModel::showValue (PajeValue *value)
 {
   if (!value) return;
-  hiddenValues[value->type()].erase(value);
+  _hiddenValues[value->type()].erase(value);
   provider->valueChanged (value);
+}
+
+std::set<PajeType*> QPajeTypeModel::hiddenTypes (void)
+{
+  return _hiddenTypes;
+}
+
+std::set<PajeValue*> QPajeTypeModel::hiddenValues (PajeType *type)
+{
+  return _hiddenValues[type];
 }
