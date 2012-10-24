@@ -22,6 +22,7 @@
 #include "PajeFileReader.h"
 #include "PajeEventDecoder.h"
 #include "PajeSimulator.h"
+#include <QPajeTypeFilter.h>
 
 class VTWindow;
 class VTSWindow;
@@ -34,6 +35,7 @@ private:
   PajeFileReader *reader;
   PajeEventDecoder *decoder;
   PajeSimulator *simulator;
+  QPajeTypeFilter *typeFilter;
 
   VTWindow *window;
   VTSWindow *tswindow;
