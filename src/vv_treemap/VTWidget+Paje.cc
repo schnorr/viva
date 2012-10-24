@@ -27,3 +27,7 @@ void VTWidget::timeSelectionChanged (void)
   repopulate ();
   update();
 }
+
+void VTWidget::dataChangedForEntityType (PajeType *type)
+{
+}
