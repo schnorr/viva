@@ -15,6 +15,7 @@
     along with PajeNG. If not, see <http://www.gnu.org/licenses/>.
 */
 #include "PajeTreemap.h"
+#include <boost/foreach.hpp>
 #include <float.h>
 
 PajeTreemap::PajeTreemap (PajeTreemap *parent, PajeComponent *filter, PajeContainer *container)
@@ -51,11 +52,13 @@ std::vector<PajeTreemap*> PajeTreemapValue::valueChildren (void)
 PajeTreemapNode::PajeTreemapNode (PajeTreemap *parent, PajeComponent *filter, PajeContainer *container)
   : PajeTreemap (parent, filter, container)
 {
-  std::vector<PajeContainer*> subcontainers = filter->enumeratorOfContainersInContainer (container);
-  std::vector<PajeContainer*>::iterator sub;
-  for (sub = subcontainers.begin(); sub != subcontainers.end(); sub++){
-    PajeTreemapNode *child = new PajeTreemapNode (this, filter, *sub);
-    _children.push_back (child);
+  std::vector<PajeType*> subtypes = filter->containedTypesForContainerType (container->type());
+  BOOST_FOREACH(PajeType *subtype, subtypes){
+    std::vector<PajeContainer*> subcontainers = filter->enumeratorOfContainersTypedInContainer (subtype, container);
+    BOOST_FOREACH(PajeContainer *subcontainer, subcontainers){
+      PajeTreemapNode *child = new PajeTreemapNode (this, filter, subcontainer);
+      _children.push_back (child);
+    }
   }
 }
 
