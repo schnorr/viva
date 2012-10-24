@@ -23,6 +23,7 @@
 #include "PajeEventDecoder.h"
 #include "PajeSimulator.h"
 #include "PajeEntropy.h"
+#include <QPajeTypeFilter.h>
 
 class VTWindow;
 class VTSWindow;
@@ -36,6 +37,7 @@ private:
   PajeEventDecoder *decoder;
   PajeSimulator *simulator;
   PajeEntropy *entropy;
+  QPajeTypeFilter *typeFilter;
 
   VTWindow *window;
   VTSWindow *tswindow;

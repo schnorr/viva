@@ -42,6 +42,7 @@ protected:
 protected: //from PajeComponent protocol
   void hierarchyChanged (void);
   void timeSelectionChanged (void);
+  void dataChangedForEntityType (PajeType *type);
 
 private:
   PajeTreemapNode *treemap;

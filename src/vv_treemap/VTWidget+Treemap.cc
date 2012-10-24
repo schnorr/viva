@@ -88,7 +88,7 @@ void VTWidget::recreate (void)
 void VTWidget::repopulate (void)
 {
   if (!treemap){
-    this->recreate (); //to create something to populate
+    throw "nothing to repopulate";
   }
 
   if (selectionEndTime() - selectionStartTime() != 0){

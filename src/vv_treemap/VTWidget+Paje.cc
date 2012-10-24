@@ -19,6 +19,10 @@
 void VTWidget::hierarchyChanged (void)
 {
   recreate();
+  treemap->timeSelectionChanged ();
+  repopulate();
+  update();
+  PajeComponent::hierarchyChanged ();
 }
 
 void VTWidget::timeSelectionChanged (void)
@@ -27,4 +31,11 @@ void VTWidget::timeSelectionChanged (void)
   rootInstance()->computeGainDivergence(selectionStartTime(), selectionEndTime());
   repopulate ();
   update();
+  PajeComponent::timeSelectionChanged ();
+}
+
+void VTWidget::dataChangedForEntityType (PajeType *type)
+{
+  hierarchyChanged ();
+  PajeComponent::dataChangedForEntityType (type);
 }

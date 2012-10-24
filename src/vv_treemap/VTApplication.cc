@@ -34,6 +34,7 @@ void VTApplication::init (void)
 {
   window = new VTWindow ();
   tswindow = new VTSWindow ();
+  typeFilter = new QPajeTypeFilter ();
 
   if (filename.isEmpty()){
     reader = new PajeFileReader ();
@@ -47,7 +48,8 @@ void VTApplication::init (void)
   connectComponents (reader, decoder);
   connectComponents (decoder, simulator);
   connectComponents (simulator, entropy);
-  connectComponents (entropy, tswindow->frame);
+  connectComponents (entropy, typeFilter);
+  connectComponents (typeFilter, tswindow->frame);
   connectComponents (tswindow->frame, window->frame->widget);
 
   {
@@ -58,6 +60,7 @@ void VTApplication::init (void)
 
   window->show();
   tswindow->show();
+  typeFilter->show();
 }
 
 void VTApplication::connectComponents (PajeComponent *c1, PajeComponent *c2)
