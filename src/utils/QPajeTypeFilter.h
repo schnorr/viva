@@ -31,17 +31,28 @@ class QPajeTypeFilter : public QWidget, public PajeComponent
 public:
   QPajeTypeFilter (QWidget *parent = 0);
   ~QPajeTypeFilter (void);
+  void keyPressEvent(QKeyEvent *e);
 
 public: //messages from QPajeTypeModel
+  std::vector<PajeType*> containedTypes (PajeType *type);
+  std::vector<PajeValue*> valuesForType (PajeType *type);
   void typeChanged (PajeType *type);
   void valueChanged (PajeValue *type);
 
 protected: //Methods from PajeComponent
   void hierarchyChanged (void);
 
+public:
+  std::vector<PajeType*> containedTypesForContainerType (PajeType *type);
+  std::vector<PajeValue*> valuesForEntityType (PajeType *type);
+  PajeAggregatedDict timeIntegrationOfTypeInContainer (PajeType *type, PajeContainer *container);
+  PajeAggregatedDict integrationOfContainer (PajeContainer *container);
+  PajeAggregatedDict spatialIntegrationOfContainer (PajeContainer *container);
+
 private:
   QTreeView *view;
   QPajeTypeModel *pajeTypeModel;
+  PajeAggregatedDict filterPajeAggregatedDict (PajeAggregatedDict unfiltered);
 };
 
 #endif

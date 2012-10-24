@@ -17,6 +17,7 @@
 #include "QPajeTypeFilter.h"
 #include <QtGui>
 #include <QPushButton>
+#include <boost/foreach.hpp>
 
 QPajeTypeFilter::QPajeTypeFilter (QWidget *parent)
 {
@@ -40,6 +41,16 @@ void QPajeTypeFilter::hierarchyChanged (void)
   PajeComponent::hierarchyChanged ();
 }
 
+std::vector<PajeType*> QPajeTypeFilter::containedTypes (PajeType *type)
+{
+  return PajeComponent::containedTypesForContainerType (type);
+}
+
+std::vector<PajeValue*> QPajeTypeFilter::valuesForType (PajeType *type)
+{
+  return PajeComponent::valuesForEntityType (type);
+}
+
 void QPajeTypeFilter::typeChanged (PajeType *type)
 {
   PajeComponent::hierarchyChanged ();
@@ -48,4 +59,73 @@ void QPajeTypeFilter::typeChanged (PajeType *type)
 void QPajeTypeFilter::valueChanged (PajeValue *value)
 {
   PajeComponent::dataChangedForEntityType (value->type());
+}
+
+std::vector<PajeType*> QPajeTypeFilter::containedTypesForContainerType (PajeType *type)
+{
+  std::vector<PajeType*> ret;
+  std::set<PajeType*> hidden = pajeTypeModel->hiddenTypes();
+  BOOST_FOREACH(PajeType *type, containedTypes(type)){
+    if (!hidden.count(type)){
+      ret.push_back(type);
+    }
+  }
+  return ret;
+}
+
+std::vector<PajeValue*> QPajeTypeFilter::valuesForEntityType (PajeType *type)
+{
+  return valuesForType (type);
+
+  std::vector<PajeValue*> ret;
+  std::set<PajeValue*> hidden = pajeTypeModel->hiddenValues(type);
+  BOOST_FOREACH(PajeValue *value, valuesForType(type)){
+    if (!hidden.count(value)){
+      ret.push_back(value);
+    }
+  }
+  return ret;
+}
+
+PajeAggregatedDict QPajeTypeFilter::filterPajeAggregatedDict (PajeAggregatedDict unfiltered)
+{
+  PajeAggregatedDict ret;
+  BOOST_FOREACH (PajeAggregatedDictEntry entry, unfiltered){
+    PajeAggregatedType *aggtype = entry.first;
+    PajeType *type = aggtype->type();
+    PajeValue *value = aggtype->value();
+
+    //check if type is hidden
+    if (!pajeTypeModel->hiddenTypes().count (type)){
+      //check if value is hidden
+      if (!pajeTypeModel->hiddenValues(type).count(value)){
+        ret.insert (entry);
+      }
+    }
+  }
+  return ret;
+}
+
+PajeAggregatedDict QPajeTypeFilter::timeIntegrationOfTypeInContainer (PajeType *type, PajeContainer *container)
+{
+  return filterPajeAggregatedDict(PajeComponent::timeIntegrationOfTypeInContainer (type, container));
+}
+
+PajeAggregatedDict QPajeTypeFilter::integrationOfContainer (PajeContainer *container)
+{
+  return filterPajeAggregatedDict (PajeComponent::integrationOfContainer (container));
+}
+
+PajeAggregatedDict QPajeTypeFilter::spatialIntegrationOfContainer (PajeContainer *container)
+{
+  return filterPajeAggregatedDict (PajeComponent::spatialIntegrationOfContainer (container));
+}
+
+void QPajeTypeFilter::keyPressEvent(QKeyEvent *e)
+{
+  if (e->key() == Qt::Key_Escape){
+    qApp->exit(0);
+  }else{
+    QWidget::keyPressEvent(e);
+  }
 }
