@@ -72,10 +72,14 @@ SET(TREEMAP_SOURCES
 # Utils (Qt-based) sources
 SET(UTILS_HEADERS
   src/utils/VTSFrame.h
-  src/utils/VTSWindow.h)
+  src/utils/VTSWindow.h
+  src/utils/QPajeTypeModel.h
+  src/utils/QPajeTypeFilter.h)
 SET(UTILS_SOURCES
   src/utils/VTSFrame.cc
-  src/utils/VTSWindow.cc)
+  src/utils/VTSWindow.cc
+  src/utils/QPajeTypeModel.cc
+  src/utils/QPajeTypeFilter.cc)
 
 # the cmake options
 OPTION(VIVA         "The Viva visualization tool (Qt4 version)" ON)
