@@ -20,6 +20,7 @@
 #include <PajeType.h>
 
 class QLineEdit;
+class QSlider;
 class QGroupBox;
 class QPushButton;
 class QRadioButton;
@@ -34,6 +35,8 @@ public:
 
 private:
   QLineEdit *pInput;
+  QSlider *pSlider;
+  QGroupBox *pGroupBox;
   QGroupBox *typeGroupBox;
   QPushButton *cancelButton;
   QPushButton *okButton;

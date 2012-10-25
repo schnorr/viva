@@ -18,6 +18,7 @@
 #include <QFormLayout>
 #include "EntropyDialog.h"
 #include <boost/foreach.hpp>
+#include <limits>
 
 EntropyDialog::EntropyDialog (PajeAggregatedDict variables,
                               double startingP,
@@ -25,15 +26,25 @@ EntropyDialog::EntropyDialog (PajeAggregatedDict variables,
                               QWidget *parent)
   : QDialog (parent)
 {
+  /* configuring the p group */
   pInput = new QLineEdit;
   pInput->setValidator (new QDoubleValidator(0, 1, 4, pInput));
   QString str;
   str.setNum(startingP);
   pInput->setText (str);
-  typeGroupBox = new QGroupBox (tr("Variable"));
+  pSlider = new QSlider (Qt::Horizontal);
+  pSlider->setMinimum (0);
+  pSlider->setMaximum (std::numeric_limits<int>::max());
 
-  QVBoxLayout *vbox = new QVBoxLayout;
+  QVBoxLayout *pGroupBoxLayout = new QVBoxLayout;
+  pGroupBoxLayout->addWidget (pSlider);
+  pGroupBoxLayout->addWidget (pInput);
+  pGroupBoxLayout->addWidget (new QWidget());
+  pGroupBox = new QGroupBox (tr("P"));
+  pGroupBox->setLayout (pGroupBoxLayout);
 
+  /* configure the type group */
+  QVBoxLayout *typeGroupBoxLayout = new QVBoxLayout;
   //fill typeInput
   int flag = 0;
   BOOST_FOREACH (PajeAggregatedDictEntry entry, variables){
@@ -50,20 +61,23 @@ EntropyDialog::EntropyDialog (PajeAggregatedDict variables,
         button->setChecked (true);
       }
     }
-    vbox->addWidget (button);
+    typeGroupBoxLayout->addWidget (button);
     button_to_type[button] = type;
   }
-  typeGroupBox->setLayout (vbox);
+  typeGroupBox = new QGroupBox (tr("Variable"));
+  typeGroupBox->setLayout (typeGroupBoxLayout);
 
+  /* configure the bottom */
   cancelButton = new QPushButton (tr("Cancel"));
   okButton = new QPushButton (tr("Ok"));
-
-  QVBoxLayout *layout = new QVBoxLayout;
-  layout->addWidget (pInput);
-  layout->addWidget (typeGroupBox);
   QHBoxLayout *hbox = new QHBoxLayout;
   hbox->addWidget (cancelButton);
   hbox->addWidget (okButton);
+
+  /* put everything together */
+  QVBoxLayout *layout = new QVBoxLayout;
+  layout->addWidget (pGroupBox);
+  layout->addWidget (typeGroupBox);
   layout->addLayout (hbox);
 
   setLayout (layout);
