@@ -17,6 +17,7 @@
 #include <QtGui>
 #include <QFormLayout>
 #include "EntropyDialog.h"
+#include <boost/foreach.hpp>
 
 EntropyDialog::EntropyDialog (PajeAggregatedDict variables,
                               double startingP,
@@ -34,13 +35,16 @@ EntropyDialog::EntropyDialog (PajeAggregatedDict variables,
   QVBoxLayout *vbox = new QVBoxLayout;
 
   //fill typeInput
-  PajeAggregatedDict::iterator it;
-  for (it = variables.begin(); it != variables.end(); it++){
-    PajeAggregatedType *type = (*it).first;
+  int flag = 0;
+  BOOST_FOREACH (PajeAggregatedDictEntry entry, variables){
+    PajeAggregatedType *type = entry.first;
     QString str = QString::fromStdString(type->description());
     QRadioButton *button = new QRadioButton (str);
     if (startingType == NULL){
-      if (it == variables.begin()) button->setChecked(true);
+      if (flag == 0){
+        button->setChecked(true);
+        flag = 1;
+      }
     }else{
       if (type->description() == startingType->description()){
         button->setChecked (true);
