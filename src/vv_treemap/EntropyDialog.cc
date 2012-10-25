@@ -29,12 +29,17 @@ EntropyDialog::EntropyDialog (PajeAggregatedDict variables,
   /* configuring the p group */
   pInput = new QLineEdit;
   pInput->setValidator (new QDoubleValidator(0, 1, 4, pInput));
+  connect (pInput, SIGNAL(editingFinished()),
+           this, SLOT(pInputEditFinished()));
   QString str;
   str.setNum(startingP);
   pInput->setText (str);
   pSlider = new QSlider (Qt::Horizontal);
   pSlider->setMinimum (0);
   pSlider->setMaximum (std::numeric_limits<int>::max());
+  pSlider->setSliderPosition (startingP * std::numeric_limits<int>::max());
+  connect (pSlider, SIGNAL(sliderMoved(int)),
+           this, SLOT(pSliderMoved(int)));
 
   QVBoxLayout *pGroupBoxLayout = new QVBoxLayout;
   pGroupBoxLayout->addWidget (pSlider);
@@ -108,4 +113,15 @@ PajeAggregatedType *EntropyDialog::type (void)
     if ((*it).first->isChecked()) return (*it).second;
   }
   return NULL;
+}
+
+void EntropyDialog::pSliderMoved (int value)
+{
+  double x = (double)value / std::numeric_limits<int>::max();
+  pInput->setText (QString::number(x));
+}
+
+void EntropyDialog::pInputEditFinished (void)
+{
+  pSlider->setSliderPosition (p() * std::numeric_limits<int>::max());
 }

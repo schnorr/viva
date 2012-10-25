@@ -45,6 +45,10 @@ private:
 public:
   double p (void);
   PajeAggregatedType *type (void);
+
+public slots:
+  void pSliderMoved (int value);
+  void pInputEditFinished (void);
 };
 
 #endif
