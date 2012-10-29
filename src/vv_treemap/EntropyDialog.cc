@@ -20,12 +20,10 @@
 #include <boost/foreach.hpp>
 #include <limits>
 
-EntropyDialog::EntropyDialog (PajeAggregatedDict variables,
-                              double startingP,
-                              PajeAggregatedType *startingType,
-                              QWidget *parent)
-  : QDialog (parent)
+EntropyDialog::EntropyDialog (double startingP, VTWidget *treemap)
 {
+  this->treemap = treemap;
+
   /* configuring the p group */
   pInput = new QLineEdit;
   pInput->setValidator (new QDoubleValidator(0, 1, 4, pInput));
@@ -44,60 +42,33 @@ EntropyDialog::EntropyDialog (PajeAggregatedDict variables,
   QVBoxLayout *pGroupBoxLayout = new QVBoxLayout;
   pGroupBoxLayout->addWidget (pSlider);
   pGroupBoxLayout->addWidget (pInput);
-  pGroupBoxLayout->addWidget (new QWidget());
   pGroupBox = new QGroupBox (tr("P"));
   pGroupBox->setLayout (pGroupBoxLayout);
 
   /* configure the type group */
-  QVBoxLayout *typeGroupBoxLayout = new QVBoxLayout;
-  //fill typeInput
-  int flag = 0;
-  BOOST_FOREACH (PajeAggregatedDictEntry entry, variables){
-    PajeAggregatedType *type = entry.first;
-    QString str = QString::fromStdString(type->description());
-    QRadioButton *button = new QRadioButton (str);
-    if (startingType == NULL){
-      if (flag == 0){
-        button->setChecked(true);
-        flag = 1;
-      }
-    }else{
-      if (type->description() == startingType->description()){
-        button->setChecked (true);
-      }
-    }
-    typeGroupBoxLayout->addWidget (button);
-    button_to_type[button] = type;
-  }
+  typeGroupBoxLayout = new QVBoxLayout;
   typeGroupBox = new QGroupBox (tr("Variable"));
   typeGroupBox->setLayout (typeGroupBoxLayout);
-
-  /* configure the bottom */
-  cancelButton = new QPushButton (tr("Cancel"));
-  okButton = new QPushButton (tr("Ok"));
-  QHBoxLayout *hbox = new QHBoxLayout;
-  hbox->addWidget (cancelButton);
-  hbox->addWidget (okButton);
 
   /* put everything together */
   QVBoxLayout *layout = new QVBoxLayout;
   layout->addWidget (pGroupBox);
   layout->addWidget (typeGroupBox);
-  layout->addLayout (hbox);
 
+  /* set layout */
   setLayout (layout);
   setWindowTitle (tr("Entropy configuration"));
+}
 
-  connect (cancelButton, SIGNAL(clicked()), this, SLOT(reject()));
-  connect (okButton, SIGNAL(clicked()), this, SLOT(accept()));
+void EntropyDialog::teste (void)
+{
+  this->updateVariables (treemap->spatialIntegrationOfContainer(treemap->rootInstance()));
 }
 
 EntropyDialog::~EntropyDialog (void)
 {
   delete pInput;
   delete typeGroupBox;
-  delete cancelButton;
-  delete okButton;
 }
 
 double EntropyDialog::p (void)
@@ -115,13 +86,49 @@ PajeAggregatedType *EntropyDialog::type (void)
   return NULL;
 }
 
+void EntropyDialog::updateVariables (PajeAggregatedDict variables)
+{
+  // clear existing layout and buttons
+  QLayoutItem *child;
+  while ((child = typeGroupBoxLayout->takeAt(0)) != 0) {
+    delete child->widget();
+    delete child;
+  }
+  button_to_type.clear();
+
+  //fill new layout and buttons
+  PajeAggregatedType *startingType = NULL;
+  int flag = 0;
+  BOOST_FOREACH (PajeAggregatedDictEntry entry, variables){
+    PajeAggregatedType *type = entry.first;
+    QString str = QString::fromStdString(type->description());
+    QRadioButton *button = new QRadioButton (str, typeGroupBox);
+    if (startingType == NULL){
+      if (flag == 0){
+        button->setChecked(true);
+        flag = 1;
+      }
+    }else{
+      if (type->description() == startingType->description()){
+        button->setChecked (true);
+      }
+    }
+    typeGroupBoxLayout->addWidget (button);
+    button_to_type[button] = type;
+    connect (button, SIGNAL(clicked()), treemap, SLOT(updateEntropyData()));
+  }
+  typeGroupBox->setLayout (typeGroupBoxLayout);
+}
+
 void EntropyDialog::pSliderMoved (int value)
 {
   double x = (double)value / std::numeric_limits<int>::max();
   pInput->setText (QString::number(x));
+  treemap->updateEntropyData();
 }
 
 void EntropyDialog::pInputEditFinished (void)
 {
   pSlider->setSliderPosition (p() * std::numeric_limits<int>::max());
+  treemap->updateEntropyData();
 }

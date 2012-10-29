@@ -16,39 +16,44 @@
 */
 #ifndef __ENTROPY_DIALOG_H
 #define __ENTROPY_DIALOG_H
-#include <QDialog>
+#include <QWidget>
 #include <PajeType.h>
+#include "VTWidget.h"
 
 class QLineEdit;
 class QSlider;
 class QGroupBox;
 class QPushButton;
 class QRadioButton;
+class VTWidget;
 
-class EntropyDialog : public QDialog
+class EntropyDialog : public QWidget
 {
   Q_OBJECT;
 
 public:
-  EntropyDialog (PajeAggregatedDict variables, double startingP, PajeAggregatedType *startingType, QWidget *parent = 0);
+  EntropyDialog (double startingP, VTWidget *treemap);
   ~EntropyDialog (void);
 
 private:
+  VTWidget *treemap;
+
   QLineEdit *pInput;
   QSlider *pSlider;
   QGroupBox *pGroupBox;
   QGroupBox *typeGroupBox;
-  QPushButton *cancelButton;
-  QPushButton *okButton;
+  QVBoxLayout *typeGroupBoxLayout;
   std::map<QRadioButton*,PajeAggregatedType*> button_to_type;
 
 public:
   double p (void);
   PajeAggregatedType *type (void);
+  void updateVariables (PajeAggregatedDict variables);
 
 public slots:
   void pSliderMoved (int value);
   void pInputEditFinished (void);
+  void teste (void);
 };
 
 #endif

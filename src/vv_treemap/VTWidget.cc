@@ -15,7 +15,6 @@
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
 #include "VTWidget.h"
-#include "EntropyDialog.h"
 
 VTWidget::VTWidget (QWidget *parent)
   : QGLWidget (QGLFormat (QGL::SampleBuffers), parent)
@@ -23,9 +22,9 @@ VTWidget::VTWidget (QWidget *parent)
   treemap = NULL;
   currentDepth = 0;
   setFocusPolicy (Qt::StrongFocus);
-  entropyP = 0.3;
-  entropyVariable = NULL;
   zoomType = GlobalZoom;
+
+  entropyConfigurationWidget = new EntropyDialog (0.3, this);
 }
 
 VTWidget::~VTWidget (void)
@@ -83,25 +82,11 @@ void VTWidget::wheelEvent (QWheelEvent *event)
 void VTWidget::keyPressEvent(QKeyEvent *event)
 {
   if (event->key() == Qt::Key_E){
-    bool ok = false;
-    EntropyDialog dialog (spatialIntegrationOfContainer(rootInstance()), entropyP, entropyVariable, this);
-    dialog.exec();
-    entropyP = dialog.p();
-    entropyVariable = dialog.type();
-    if (dialog.result() == QDialog::Accepted && entropyVariable){
-      std::cout << "Considering a p: " << entropyP << " and variable: " << entropyVariable->description() << std::endl;
-      bestAggregation = findBestAggregation (rootInstance(), entropyVariable, entropyP);
-      std::cout << "-> maxRIC = " << bestAggregation.first << std::endl;
-      std::vector<PajeContainer*>::iterator it;
-      std::cout << "-> bestAggregation = {";
-      for (it = bestAggregation.second.begin(); it != bestAggregation.second.end(); it++){
-        PajeContainer *c = *it;
-        std::cout << c->name() << ", ";
-      }
-      std::cout << "}" << std::endl;
-      zoomType = EntropyZoom;
-      update();
-    }
+    //first, populate entropyConfigurationWidget
+    entropyConfigurationWidget->updateVariables (spatialIntegrationOfContainer(rootInstance()));
+    updateEntropyData ();
+    entropyConfigurationWidget->show();
+    zoomType = EntropyZoom;
   }else if(event->key() == Qt::Key_G){
     zoomType = GlobalZoom;
     update();
@@ -111,4 +96,21 @@ void VTWidget::keyPressEvent(QKeyEvent *event)
   }else{
     QWidget::keyPressEvent(event);
   }
+}
+
+void VTWidget::updateEntropyData (void)
+{
+  double p = entropyConfigurationWidget->p();
+  PajeAggregatedType *type = entropyConfigurationWidget->type();
+  bestAggregation = findBestAggregation (rootInstance(), type, p);
+  std::cout << "Considering a p: " << p << " and variable: " << type->description() << std::endl;
+  std::cout << "-> maxRIC = " << bestAggregation.first << std::endl;
+  std::vector<PajeContainer*>::iterator it;
+  std::cout << "-> bestAggregation = {";
+  for (it = bestAggregation.second.begin(); it != bestAggregation.second.end(); it++){
+    PajeContainer *c = *it;
+    std::cout << c->name() << ", ";
+  }
+  std::cout << "}" << std::endl;
+  update();
 }

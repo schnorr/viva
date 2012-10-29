@@ -19,6 +19,9 @@
 #include <QGLWidget>
 #include <PajeComponent.h>
 #include "PajeTreemap.h"
+#include "EntropyDialog.h"
+
+class EntropyDialog;
 
 class VTWidget : public QGLWidget, public PajeComponent
 {
@@ -30,6 +33,8 @@ public:
 
   QSize minimumSizeHint (void) const;
   QSize sizeHint (void) const;
+public slots:
+  void updateEntropyData (void);
 
 protected:
   void mousePressEvent (QMouseEvent *event);
@@ -45,13 +50,12 @@ protected: //from PajeComponent protocol
   void dataChangedForEntityType (PajeType *type);
 
 private:
+  EntropyDialog *entropyConfigurationWidget;
   PajeTreemapNode *treemap;
   int currentDepth;
   enum {GlobalZoom, LocalZoom, EntropyZoom} zoomType;
 
   //entropy properties
-  double entropyP;
-  PajeAggregatedType *entropyVariable;
   std::pair<double,std::vector<PajeContainer*> > bestAggregation;
 
 protected: //myself
