@@ -27,13 +27,13 @@ class QPushButton;
 class QRadioButton;
 class VTWidget;
 
-class EntropyDialog : public QWidget
+class EntropyConfigurationWidget : public QWidget
 {
   Q_OBJECT;
 
 public:
-  EntropyDialog (double startingP, VTWidget *treemap);
-  ~EntropyDialog (void);
+  EntropyConfigurationWidget (double startingP, VTWidget *treemap);
+  ~EntropyConfigurationWidget (void);
 
 private:
   VTWidget *treemap;

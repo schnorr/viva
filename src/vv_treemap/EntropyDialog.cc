@@ -16,11 +16,11 @@
 */
 #include <QtGui>
 #include <QFormLayout>
-#include "EntropyDialog.h"
+#include "EntropyConfigurationWidget.h"
 #include <boost/foreach.hpp>
 #include <limits>
 
-EntropyDialog::EntropyDialog (double startingP, VTWidget *treemap)
+EntropyConfigurationWidget::EntropyConfigurationWidget (double startingP, VTWidget *treemap)
 {
   this->treemap = treemap;
 
@@ -60,23 +60,23 @@ EntropyDialog::EntropyDialog (double startingP, VTWidget *treemap)
   setWindowTitle (tr("Entropy configuration"));
 }
 
-void EntropyDialog::teste (void)
+void EntropyConfigurationWidget::teste (void)
 {
   this->updateVariables (treemap->spatialIntegrationOfContainer(treemap->rootInstance()));
 }
 
-EntropyDialog::~EntropyDialog (void)
+EntropyConfigurationWidget::~EntropyConfigurationWidget (void)
 {
   delete pInput;
   delete typeGroupBox;
 }
 
-double EntropyDialog::p (void)
+double EntropyConfigurationWidget::p (void)
 {
   return pInput->text().toDouble();
 }
 
-PajeAggregatedType *EntropyDialog::type (void)
+PajeAggregatedType *EntropyConfigurationWidget::type (void)
 {
   PajeAggregatedType *type;
   std::map<QRadioButton*,PajeAggregatedType*>::iterator it;
@@ -86,7 +86,7 @@ PajeAggregatedType *EntropyDialog::type (void)
   return NULL;
 }
 
-void EntropyDialog::updateVariables (PajeAggregatedDict variables)
+void EntropyConfigurationWidget::updateVariables (PajeAggregatedDict variables)
 {
   // clear existing layout and buttons
   QLayoutItem *child;
@@ -120,14 +120,14 @@ void EntropyDialog::updateVariables (PajeAggregatedDict variables)
   typeGroupBox->setLayout (typeGroupBoxLayout);
 }
 
-void EntropyDialog::pSliderMoved (int value)
+void EntropyConfigurationWidget::pSliderMoved (int value)
 {
   double x = (double)value / std::numeric_limits<int>::max();
   pInput->setText (QString::number(x));
   treemap->updateEntropyData();
 }
 
-void EntropyDialog::pInputEditFinished (void)
+void EntropyConfigurationWidget::pInputEditFinished (void)
 {
   pSlider->setSliderPosition (p() * std::numeric_limits<int>::max());
   treemap->updateEntropyData();

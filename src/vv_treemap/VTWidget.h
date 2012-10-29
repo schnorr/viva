@@ -19,9 +19,9 @@
 #include <QGLWidget>
 #include <PajeComponent.h>
 #include "PajeTreemap.h"
-#include "EntropyDialog.h"
+#include "EntropyConfigurationWidget.h"
 
-class EntropyDialog;
+class EntropyConfigurationWidget;
 
 class VTWidget : public QGLWidget, public PajeComponent
 {
@@ -50,7 +50,7 @@ protected: //from PajeComponent protocol
   void dataChangedForEntityType (PajeType *type);
 
 private:
-  EntropyDialog *entropyConfigurationWidget;
+  EntropyConfigurationWidget *entropyConfigurationWidget;
   PajeTreemapNode *treemap;
   int currentDepth;
   enum {GlobalZoom, LocalZoom, EntropyZoom} zoomType;

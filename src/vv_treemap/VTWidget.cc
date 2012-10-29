@@ -24,7 +24,7 @@ VTWidget::VTWidget (QWidget *parent)
   setFocusPolicy (Qt::StrongFocus);
   zoomType = GlobalZoom;
 
-  entropyConfigurationWidget = new EntropyDialog (0.3, this);
+  entropyConfigurationWidget = new EntropyConfigurationWidget (0.3, this);
 }
 
 VTWidget::~VTWidget (void)
