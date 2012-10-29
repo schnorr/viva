@@ -22,6 +22,12 @@ void VTWidget::hierarchyChanged (void)
   treemap->timeSelectionChanged ();
   repopulate();
   update();
+
+  //entropy widget
+  entropyConfigurationWidget->updateVariables (spatialIntegrationOfContainer(rootInstance()));
+  updateEntropyData ();
+
+  //keep the ball rolling
   PajeComponent::hierarchyChanged ();
 }
 
