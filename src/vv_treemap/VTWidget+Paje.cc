@@ -19,6 +19,7 @@
 void VTWidget::hierarchyChanged (void)
 {
   recreate();
+  currentDepth = treemap->maxDepth()+1;
   treemap->timeSelectionChanged ();
   repopulate();
   update();
