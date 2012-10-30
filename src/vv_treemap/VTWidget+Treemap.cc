@@ -69,5 +69,9 @@ void VTWidget::repopulate (void)
 
 void VTWidget::redraw (QPainter *painter)
 {
-  drawTreemap (painter, treemap);
+  if (treemap->treemapValue()){
+    drawTreemap (painter, treemap);
+  }else{
+    painter->drawText (QPointF(10,height()-10), tr("Nothing to draw"));
+  }
 }
