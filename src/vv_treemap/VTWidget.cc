@@ -104,14 +104,16 @@ void VTWidget::updateEntropyData (void)
   PajeAggregatedType *type = entropyConfigurationWidget->type();
   if (!type) return;
   bestAggregation = findBestAggregation (rootInstance(), type, p);
-  std::cout << "Considering a p: " << p << " and variable: " << type->description() << std::endl;
-  std::cout << "-> maxRIC = " << bestAggregation.first << std::endl;
-  std::vector<PajeContainer*>::iterator it;
-  std::cout << "-> bestAggregation = {";
-  for (it = bestAggregation.second.begin(); it != bestAggregation.second.end(); it++){
-    PajeContainer *c = *it;
-    std::cout << c->name() << ", ";
+  if (entropyConfigurationWidget->showDebugMessages()){
+    std::cout << "Considering a p: " << p << " and variable: " << type->description() << std::endl;
+    std::cout << "-> maxRIC = " << bestAggregation.first << std::endl;
+    std::vector<PajeContainer*>::iterator it;
+    std::cout << "-> bestAggregation = {";
+    for (it = bestAggregation.second.begin(); it != bestAggregation.second.end(); it++){
+      PajeContainer *c = *it;
+      std::cout << c->name() << ", ";
+    }
+    std::cout << "}" << std::endl;
   }
-  std::cout << "}" << std::endl;
   update();
 }

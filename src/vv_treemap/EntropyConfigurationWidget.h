@@ -25,6 +25,7 @@ class QSlider;
 class QGroupBox;
 class QPushButton;
 class QRadioButton;
+class QCheckBox;
 class VTWidget;
 
 class EntropyConfigurationWidget : public QWidget
@@ -43,17 +44,18 @@ private:
   QGroupBox *pGroupBox;
   QGroupBox *typeGroupBox;
   QVBoxLayout *typeGroupBoxLayout;
+  QCheckBox *debugCheckBox;
   std::map<QRadioButton*,PajeAggregatedType*> button_to_type;
 
 public:
   double p (void);
   PajeAggregatedType *type (void);
   void updateVariables (PajeAggregatedDict variables);
+  bool showDebugMessages (void);
 
 public slots:
   void pSliderMoved (int value);
   void pInputEditFinished (void);
-  void teste (void);
 };
 
 #endif

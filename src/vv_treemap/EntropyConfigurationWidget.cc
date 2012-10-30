@@ -50,19 +50,28 @@ EntropyConfigurationWidget::EntropyConfigurationWidget (double startingP, VTWidg
   typeGroupBox = new QGroupBox (tr("Variable"));
   typeGroupBox->setLayout (typeGroupBoxLayout);
 
+  /* configure miscelaneous group */
+  debugCheckBox = new QCheckBox (tr("Debug messages"));
+  debugCheckBox->setChecked (true);
+  QHBoxLayout *miscGroupBoxLayout = new QHBoxLayout;
+  miscGroupBoxLayout->addWidget (debugCheckBox);
+  QGroupBox *miscGroupBox = new QGroupBox (tr("Miscelaneous"));
+  miscGroupBox->setLayout (miscGroupBoxLayout);
+
   /* put everything together */
   QVBoxLayout *layout = new QVBoxLayout;
   layout->addWidget (pGroupBox);
   layout->addWidget (typeGroupBox);
+  layout->addWidget (miscGroupBox);
 
   /* set layout */
   setLayout (layout);
   setWindowTitle (tr("Entropy configuration"));
 }
 
-void EntropyConfigurationWidget::teste (void)
+bool EntropyConfigurationWidget::showDebugMessages (void)
 {
-  this->updateVariables (treemap->spatialIntegrationOfContainer(treemap->rootInstance()));
+  return debugCheckBox->isChecked();
 }
 
 EntropyConfigurationWidget::~EntropyConfigurationWidget (void)
