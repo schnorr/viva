@@ -61,6 +61,36 @@ void VTWidget::paintEvent(QPaintEvent *event)
 
 void VTWidget::mousePressEvent(QMouseEvent *event)
 {
+  QString default_filename (tr("vv_treemap_output.pdf"));
+
+  bool ok;
+  QString text;
+  if (event->modifiers() & Qt::ControlModifier){
+    text = default_filename;
+  }else{
+    text = QInputDialog::getText(this,
+                                       tr("PDF Export"),
+                                       tr("Filename:"),
+                                       QLineEdit::Normal,
+                                       default_filename,
+                                       &ok);
+    if (!ok) return;
+  }
+
+  if (!text.isEmpty()){
+    QPrinter printer (QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName(text);
+    printer.setFullPage(true);
+    printer.setPaperSize(QSizeF(size().width()*4,size().height()*4), QPrinter::DevicePixel);
+
+    QPainter painter(&printer);
+    painter.scale (4,4);
+    redraw (&painter);
+    painter.end();
+
+    std::cout << "Treemap printed to " << text.toStdString() << std::endl;
+  }
 }
 
 void VTWidget::mouseMoveEvent(QMouseEvent *event)
