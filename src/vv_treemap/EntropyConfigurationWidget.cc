@@ -26,7 +26,7 @@ EntropyConfigurationWidget::EntropyConfigurationWidget (double startingP, VTWidg
 
   /* configuring the p group */
   pInput = new QLineEdit;
-  pInput->setValidator (new QDoubleValidator(0, 1, 4, pInput));
+  pInput->setValidator (new QDoubleValidator(0, 1, 20, pInput));
   connect (pInput, SIGNAL(editingFinished()),
            this, SLOT(pInputEditFinished()));
   QString str;
