@@ -45,6 +45,7 @@ private:
   QGroupBox *typeGroupBox;
   QVBoxLayout *typeGroupBoxLayout;
   QCheckBox *debugCheckBox;
+  QCheckBox *falseGainCheckBox;
   std::map<QRadioButton*,PajeAggregatedType*> button_to_type;
 
 public:
@@ -52,6 +53,7 @@ public:
   PajeAggregatedType *type (void);
   void updateVariables (PajeAggregatedDict variables);
   bool showDebugMessages (void);
+  bool useEntropyGain (void);
 
 public slots:
   void pSliderMoved (int value);

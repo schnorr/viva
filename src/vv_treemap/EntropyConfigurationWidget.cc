@@ -53,8 +53,11 @@ EntropyConfigurationWidget::EntropyConfigurationWidget (double startingP, VTWidg
   /* configure miscelaneous group */
   debugCheckBox = new QCheckBox (tr("Debug messages"));
   debugCheckBox->setChecked (true);
+  falseGainCheckBox = new QCheckBox (tr("Entropy Gain"));
+  falseGainCheckBox->setChecked (true);
   QHBoxLayout *miscGroupBoxLayout = new QHBoxLayout;
   miscGroupBoxLayout->addWidget (debugCheckBox);
+  miscGroupBoxLayout->addWidget (falseGainCheckBox);
   QGroupBox *miscGroupBox = new QGroupBox (tr("Miscelaneous"));
   miscGroupBox->setLayout (miscGroupBoxLayout);
 
@@ -72,6 +75,11 @@ EntropyConfigurationWidget::EntropyConfigurationWidget (double startingP, VTWidg
 bool EntropyConfigurationWidget::showDebugMessages (void)
 {
   return debugCheckBox->isChecked();
+}
+
+bool EntropyConfigurationWidget::useEntropyGain (void)
+{
+  return !falseGainCheckBox->isChecked();
 }
 
 EntropyConfigurationWidget::~EntropyConfigurationWidget (void)
