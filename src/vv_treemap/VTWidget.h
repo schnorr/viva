@@ -49,6 +49,9 @@ protected: //from PajeComponent protocol
   void timeSelectionChanged (void);
   void dataChangedForEntityType (PajeType *type);
 
+public slots:
+  void recomputeGainDivergence (void);
+
 private:
   EntropyConfigurationWidget *entropyConfigurationWidget;
   PajeTreemapNode *treemap;

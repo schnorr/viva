@@ -53,7 +53,7 @@ public:
   PajeAggregatedType *type (void);
   void updateVariables (PajeAggregatedDict variables);
   bool showDebugMessages (void);
-  bool useEntropyGain (void);
+  bool falseGain (void);
 
 public slots:
   void pSliderMoved (int value);

@@ -35,7 +35,7 @@ void VTWidget::hierarchyChanged (void)
 void VTWidget::timeSelectionChanged (void)
 {
   treemap->timeSelectionChanged();
-  rootInstance()->computeGainDivergence(selectionStartTime(), selectionEndTime(), entropyConfigurationWidget->useEntropyGain());
+  rootInstance()->computeGainDivergence(selectionStartTime(), selectionEndTime(), entropyConfigurationWidget->falseGain());
   repopulate ();
   update();
   PajeComponent::timeSelectionChanged ();
@@ -45,4 +45,13 @@ void VTWidget::dataChangedForEntityType (PajeType *type)
 {
   hierarchyChanged ();
   PajeComponent::dataChangedForEntityType (type);
+}
+
+void VTWidget::recomputeGainDivergence (void)
+{
+  std::cout << __FUNCTION__ << std::endl;
+  rootInstance()->computeGainDivergence(selectionStartTime(), selectionEndTime(), entropyConfigurationWidget->falseGain());
+  repopulate ();
+  updateEntropyData();
+  update();
 }
