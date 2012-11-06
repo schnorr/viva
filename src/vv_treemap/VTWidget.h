@@ -33,6 +33,7 @@ public:
 
   QSize minimumSizeHint (void) const;
   QSize sizeHint (void) const;
+
 public slots:
   void updateEntropyData (void);
 
@@ -56,6 +57,8 @@ private:
   EntropyConfigurationWidget *entropyConfigurationWidget;
   PajeTreemapNode *treemap;
   int currentDepth;
+  void zoomIn (void);
+  void zoomOut (void);
   enum {GlobalZoom, LocalZoom, EntropyZoom} zoomType;
 
   //entropy properties
