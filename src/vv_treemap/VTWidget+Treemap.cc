@@ -68,13 +68,15 @@ void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
   }  
 
 
-  QPen pen = QPen();
-  if (t->depth() >= 1){
-    pen.setWidth (treemap->maxDepth() - t->depth());
-    painter->setPen (pen);
-  }
-  painter->drawRect (t->rect());
+  PajeTreemapNode *parent = dynamic_cast<PajeTreemapNode*>(t->parent());
+  if (parent && parent->children().size() > 1){
+    double width = t->maxDepth() - t->depth();
 
+    QPen pen = QPen();
+    pen.setWidthF (width);
+    painter->setPen (pen);
+    painter->drawRect (t->rect());
+  }
 }
 
 void VTWidget::recreate (void)
