@@ -96,11 +96,34 @@ void VTWidget::mouseMoveEvent(QMouseEvent *event)
 void VTWidget::wheelEvent (QWheelEvent *event)
 {
   if (event->delta() > 0){
-    currentDepth++;
-    if (currentDepth > treemap->maxDepth()) currentDepth = treemap->maxDepth();
+    zoomIn();
   }else{
-    currentDepth--;
-    if (currentDepth < 0) currentDepth = 0;
+    zoomOut();
   }
   update();
+}
+
+void VTWidget::zoomIn (void)
+{
+  currentDepth++;
+  if (currentDepth > treemap->maxDepth()) currentDepth = treemap->maxDepth();
+}
+
+void VTWidget::zoomOut (void)
+{
+  currentDepth--;
+  if (currentDepth < 0) currentDepth = 0;
+}
+
+void VTWidget::keyPressEvent(QKeyEvent *event)
+{
+  if(event->key() == Qt::Key_Up){
+    zoomIn();
+    update();
+  }else if(event->key() == Qt::Key_Down){
+    zoomOut();
+    update();
+  }else{
+    QWidget::keyPressEvent(event);
+  }
 }

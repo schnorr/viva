@@ -30,6 +30,7 @@ public:
 
   QSize minimumSizeHint (void) const;
   QSize sizeHint (void) const;
+  void keyPressEvent(QKeyEvent *event);
 
 protected:
   void mousePressEvent (QMouseEvent *event);
@@ -46,6 +47,8 @@ protected: //from PajeComponent protocol
 private:
   PajeTreemapNode *treemap;
   int currentDepth;
+  void zoomIn (void);
+  void zoomOut (void);
 
 protected: //myself
   void drawTreemap (QPainter *painter, PajeTreemap *treemap);
