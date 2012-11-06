@@ -35,7 +35,7 @@ void VTWidget::hierarchyChanged (void)
 void VTWidget::timeSelectionChanged (void)
 {
   treemap->timeSelectionChanged();
-  rootInstance()->computeGainDivergence(selectionStartTime(), selectionEndTime());
+  rootInstance()->computeGainDivergence(selectionStartTime(), selectionEndTime(), entropyConfigurationWidget->useEntropyGain());
   repopulate ();
   update();
   PajeComponent::timeSelectionChanged ();
