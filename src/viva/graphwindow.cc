@@ -255,11 +255,15 @@ void GraphWindow::OnCreateScaleSliders (wxCommandEvent& event)
   }
 
   if (!vivagraph->compositionsScale.size()){
+    std::cout << "!vivagraph->compositionsScale.size() is true, OnCreateScaleSliders not effective" << std::endl;
     return;
   }
 
   static int created = 0;
-  if (created) return;
+  if (created){
+    std::cout << __FUNCTION__ << " sliders already created!" << std::endl;
+    return;
+  }
 
   //creating the sliders to let user control the scale of compositions
   wxBoxSizer *scale_sliders = new wxBoxSizer (wxHORIZONTAL);
