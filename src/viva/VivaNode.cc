@@ -55,6 +55,8 @@ VivaComposition::VivaComposition (VivaGraph *filter, PajeContainer *container, c
   std::string size_typename (config_setting_get_string (size));
   size_type = filter->entityTypeWithName (size_typename);
 
+  std::cout << container->name() << " size_typename = " << size_typename << std::endl;
+
   int i;
   for (i = 0; i < config_setting_length (values); i++){
     config_setting_t *value = config_setting_get_elem (values, i);
