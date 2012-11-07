@@ -149,7 +149,7 @@ void VTWidget::updateEntropyData (void)
   double p = entropyConfigurationWidget->p();
   PajeAggregatedType *type = entropyConfigurationWidget->type();
   if (!type) return;
-  bestAggregation = findBestAggregation (rootInstance(), type, p);
+  bestAggregation = findBestAggregation (rootInstance(), type, p, entropyConfigurationWidget->falseGain());
   if (entropyConfigurationWidget->showDebugMessages()){
     std::cout << "Considering a p: " << p << " and variable: " << type->description() << std::endl;
     std::cout << "-> maxRIC = " << bestAggregation.first << std::endl;
