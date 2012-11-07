@@ -99,6 +99,8 @@ void VivaComposition::layout (void)
   double size_var = 2 * COMPOSITION_MAX_SIZE * values[size_type->name]/max;
   double size = sqrt (userScale * size_var);
 
+  std::cout << "VivaComposition::layout size=" << size << std::endl;
+
   //update the new width and height
   width = size;
   height = size;
