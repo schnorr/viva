@@ -114,6 +114,8 @@ void VivaComposition::layout (void)
 
 void VivaComposition::draw (tp_point base)
 {
+  std::cout << "VivaComposition::" << __FUNCTION__ << " " << container->name() << " width: " << width << std::endl;
+
   glTranslatef (base.x, base.y, 0);
 
   //fill my rectangle
@@ -234,6 +236,8 @@ void VivaNode::layout (void)
 
 void VivaNode::draw (void)
 {
+  std::cout << "VivaNode::" << __FUNCTION__ << " " << container->name() << std::endl;
+
   tp_point position = this->position();
   tp_point translate = tp_Point (position.x - width/2,
                                  position.y + height/2);
