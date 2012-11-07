@@ -86,6 +86,8 @@ void GraphFrame::OnPaint(wxPaintEvent& event)
   if (vivagraph->nodes.size() == 0){
     std::cout << "nothing to draw" << std::endl;
     return;
+  }else{
+    std::cout << "drawing " << vivagraph->nodes.size() << " nodes." << std::endl;
   }
 
   SetCurrent();
