@@ -96,6 +96,9 @@ void VivaComposition::layout (void)
 
   double max = filter->maxForConfigurationWithName (name);
   double userScale = filter->userScaleForConfigurationWithName (name) * 100; //use a 100 magnification
+  if (userScale == 0){
+    userScale = 100;
+  }
   double size_var = 2 * COMPOSITION_MAX_SIZE * values[size_type->name]/max;
   double size = sqrt (userScale * size_var);
 
