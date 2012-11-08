@@ -54,8 +54,6 @@ void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
 
     }else{
 
-  // std::cout << "Drawing " << t->container->name() << std::endl;
-
       //aggregated children
       std::vector<PajeTreemap*> valueChildren = t->valueChildren();
       for (it = valueChildren.begin(); it != valueChildren.end(); it++){
