@@ -68,14 +68,42 @@ void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
   }  
 
 
-  PajeTreemapNode *parent = dynamic_cast<PajeTreemapNode*>(t->parent());
-  if (parent && parent->children().size() > 1){
-    double width = t->maxDepth() - t->depth();
+  //draw children's border
+  if (t->depth() < currentDepth){
+    QPainterPath childrenBorderPath;
+    std::vector<PajeTreemap*> children = t->children();
+    for (it = children.begin(); it != children.end(); it++){
+      PajeTreemap *child = *it;
+      childrenBorderPath.addRect (child->rect());
+    }
 
     QPen pen = QPen();
+    int max = t->maxDepth() - 1;
+    pen.setWidthF(max - t->depth());
+    int childDepth = t->depth() + 1;
+    if (max%2){
+      //max depth is odd
+      if (childDepth%2){
+        //childDepth is odd
+        pen.setColor(Qt::black);
+      }else{
+        //childDepth is even
+        pen.setColor(Qt::white);
+      }
+    }else{
+      //max depth is even
+      if (childDepth%2){
+        //childDepth is odd
+        pen.setColor(Qt::white);
+      }else{
+        //childDepth is even
+        pen.setColor(Qt::black);
+      }
+    }
+    double width = t->maxDepth() - t->depth() - 1;
     pen.setWidthF (width);
     painter->setPen (pen);
-    painter->drawRect (t->rect());
+    painter->drawPath (childrenBorderPath);
   }
 }
 
