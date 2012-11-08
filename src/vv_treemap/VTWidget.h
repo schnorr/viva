@@ -66,6 +66,7 @@ private:
 
 protected: //myself
   void drawTreemap (QPainter *painter, PajeTreemap *treemap);
+  void drawChildrensBorder (QPainter *painter, PajeTreemap *treemap);
   void recreate (void);
   void repopulate (void);
   void redraw (QPainter *painter);

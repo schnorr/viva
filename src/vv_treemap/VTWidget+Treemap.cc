@@ -40,6 +40,11 @@ void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
       }
     }
 
+    //draw children's border
+    if (t->depth() < currentDepth){
+      drawChildrensBorder (painter, t);
+    }
+
 //EntropyZoom
   }else if (zoomType == EntropyZoom){
     std::vector<PajeContainer*>::iterator found = std::find (bestAggregation.second.begin(), bestAggregation.second.end(), t->container);
@@ -51,6 +56,7 @@ void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
         PajeTreemap *child = *it;
         this->drawTreemap (painter, child);
       }
+      drawChildrensBorder (painter, t);
 
     }else{
 
@@ -63,46 +69,47 @@ void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
       }
 
     }
-  }  
-
-
-  //draw children's border
-  if (t->depth() < currentDepth){
-    QPainterPath childrenBorderPath;
-    std::vector<PajeTreemap*> children = t->children();
-    for (it = children.begin(); it != children.end(); it++){
-      PajeTreemap *child = *it;
-      childrenBorderPath.addRect (child->rect());
-    }
-
-    QPen pen = QPen();
-    int max = t->maxDepth() - 1;
-    pen.setWidthF(max - t->depth());
-    int childDepth = t->depth() + 1;
-    if (max%2){
-      //max depth is odd
-      if (childDepth%2){
-        //childDepth is odd
-        pen.setColor(Qt::black);
-      }else{
-        //childDepth is even
-        pen.setColor(Qt::white);
-      }
-    }else{
-      //max depth is even
-      if (childDepth%2){
-        //childDepth is odd
-        pen.setColor(Qt::white);
-      }else{
-        //childDepth is even
-        pen.setColor(Qt::black);
-      }
-    }
-    double width = t->maxDepth() - t->depth() - 1;
-    pen.setWidthF (width);
-    painter->setPen (pen);
-    painter->drawPath (childrenBorderPath);
   }
+
+}
+
+void VTWidget::drawChildrensBorder (QPainter *painter, PajeTreemap *treemap)
+{
+  QPainterPath childrenBorderPath;
+  std::vector<PajeTreemap*>::iterator it;
+  std::vector<PajeTreemap*> children = treemap->children();
+  for (it = children.begin(); it != children.end(); it++){
+    PajeTreemap *child = *it;
+    childrenBorderPath.addRect (child->rect());
+  }
+
+  QPen pen = QPen();
+  int max = treemap->maxDepth() - 1;
+  pen.setWidthF(max - treemap->depth());
+  int childDepth = treemap->depth() + 1;
+  if (max%2){
+    //max depth is odd
+    if (childDepth%2){
+      //childDepth is odd
+      pen.setColor(Qt::black);
+    }else{
+      //childDepth is even
+      pen.setColor(Qt::white);
+    }
+  }else{
+    //max depth is even
+    if (childDepth%2){
+      //childDepth is odd
+      pen.setColor(Qt::white);
+    }else{
+      //childDepth is even
+      pen.setColor(Qt::black);
+    }
+  }
+  double width = treemap->maxDepth() - treemap->depth() - 1;
+  pen.setWidthF (width);
+  painter->setPen (pen);
+  painter->drawPath (childrenBorderPath);
 }
 
 void VTWidget::recreate (void)
