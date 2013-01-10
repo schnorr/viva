@@ -101,7 +101,7 @@ void VivaComposition::layout (void)
   if (found != values.end()){
     size_aggval = (*found).second;
   }else{
-    throw "value for size not found, not present among aggregated values";
+    return;
   }
 
   double size_var = 2 * COMPOSITION_MAX_SIZE * size_aggval/max;
