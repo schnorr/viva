@@ -9,8 +9,9 @@ techniques. Some features include:
 * Temporal integration using dynamic time-intervals
 * Spatial aggregation through hierarchical traces
 * Interactive Graph Visualization with a force-directed algorithm
+* Squarified Treemap to compare processes behavior on scale
 
-Viva is released under the [GNU Lesser General Public
+Viva is released under the [GNU General Public
 Licence](http://www.gnu.org/licenses/lgpl.html) and received funding
 from the [CAPES/Cofecub](http://www.capes.gov.br),
 [CNPq](http://www.cnpq.br), and
@@ -18,17 +19,20 @@ from the [CAPES/Cofecub](http://www.capes.gov.br),
 the tool is developed as part of the french [INFRA-SONGS ANR
 project](http://infra-songs.gforge.inria.fr/).
 
+__We are still polishing things before the first implementation push to
+this repository. Please, bear with us and check back soon__.
+
 Dependencies
 ------------
 
-Viva needs wxWidgets, OpenGL, LibConfig, GTK2, GLUT.
+Viva needs Qt, OpenGL, LibConfig, GLUT, Boost, and PajeNG.
 
 Installation
 ------------
 
 Just follow these steps:
 
-     $ git clone git://scm.gforge.inria.fr/triva/viva.git
+     $ git clone git@github.com:schnorr/viva.git
      $ mkdir build
      $ cd build
      $ cmake ..
@@ -39,9 +43,7 @@ How to run
 
 If you are in the build directory, just type:
 
-     $ ./viva -g <graph_configuration_file.txt> <trace_file.trace>
-
-You might want to look into the examples directory.
+     $ ./viva <trace_file.trace> <graph_configuration_file.plist>
 
 Contact
 -------
