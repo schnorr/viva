@@ -340,11 +340,19 @@ void VivaGraph::defineMaxForConfigurations (void)
       continue;
     }
     std::string size_typename = std::string(config_setting_get_string (size));
-    PajeType *size_type = entityTypeWithName (size_typename);
-    std::map<std::string,double> values = spatialIntegrationOfContainer (rootInstance());
-
     std::string settingName = std::string(config_setting_name (conf));
-    compositionsScale[settingName] = values[size_typename];
+
+    PajeType *size_type = entityTypeWithName (size_typename);
+    PajeAggregatedDict values = spatialIntegrationOfContainer (rootInstance());
+    PajeAggregatedType aggtype (size_type);
+
+    PajeAggregatedDict::iterator found = values.find (&aggtype);
+    if (found != values.end()){
+      compositionsScale[settingName] = (*found).second;
+    }else{
+      throw "value to define composition scale not found";
+      compositionsScale[settingName] = 1;
+    }
   }
 }
 
@@ -357,6 +365,7 @@ void VivaGraph::timeSelectionChanged (void)
 {
   this->defineMaxForConfigurations ();
   this->layoutNodes ();
+  emit graphChanged ();
 }
 
 void VivaGraph::hierarchyChanged (void)

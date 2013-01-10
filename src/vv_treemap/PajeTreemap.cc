@@ -54,10 +54,12 @@ PajeTreemapNode::PajeTreemapNode (PajeTreemap *parent, PajeComponent *filter, Pa
 {
   std::vector<PajeType*> subtypes = filter->containedTypesForContainerType (container->type());
   BOOST_FOREACH(PajeType *subtype, subtypes){
-    std::vector<PajeContainer*> subcontainers = filter->enumeratorOfContainersTypedInContainer (subtype, container);
-    BOOST_FOREACH(PajeContainer *subcontainer, subcontainers){
-      PajeTreemapNode *child = new PajeTreemapNode (this, filter, subcontainer);
-      _children.push_back (child);
+    if (filter->isContainerType (subtype)){
+      std::vector<PajeContainer*> subcontainers = filter->enumeratorOfContainersTypedInContainer (subtype, container);
+      BOOST_FOREACH(PajeContainer *subcontainer, subcontainers){
+        PajeTreemapNode *child = new PajeTreemapNode (this, filter, subcontainer);
+        _children.push_back (child);
+      }
     }
   }
 }

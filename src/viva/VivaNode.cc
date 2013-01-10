@@ -89,12 +89,22 @@ void VivaComposition::layout (void)
   height = 0;
 
   if (!filter || !size_type || !container) return;
-  std::map<std::string,double> values = filter->spatialIntegrationOfContainer (container);
+  PajeAggregatedDict values = filter->spatialIntegrationOfContainer (container);
   if (values.size() == 0) return;
 
   double max = filter->maxForConfigurationWithName (name);
   double userScale = filter->userScaleForConfigurationWithName (name) * 100; //use a 100 magnification
-  double size_var = 2 * COMPOSITION_MAX_SIZE * values[size_type->name]/max;
+
+  PajeAggregatedType aggtype (size_type);
+  PajeAggregatedDict::iterator found = values.find (&aggtype);
+  double size_aggval = 0;
+  if (found != values.end()){
+    size_aggval = (*found).second;
+  }else{
+    return;
+  }
+
+  double size_var = 2 * COMPOSITION_MAX_SIZE * size_aggval/max;
   double size = sqrt (userScale * size_var);
 
   //update the new width and height
@@ -105,9 +115,19 @@ void VivaComposition::layout (void)
   std::vector<PajeType*>::iterator it;
   for (it = values_type.begin(); it != values_type.end(); it++){
     PajeType *t = (*it);
-    double s = values[t->name];
+
+    PajeAggregatedType aggtype (t);
+    PajeAggregatedDict::iterator found = values.find (&aggtype);
+    double proportion_aggval = 0;
+    if (found != values.end()){
+      proportion_aggval = (*found).second;
+    }else{
+      continue;
+    }
+    double s = proportion_aggval;
+
     if (s){
-      proportion[t] = s/values[size_type->name];
+      proportion[t] = s/size_aggval;
     }
   }
 }

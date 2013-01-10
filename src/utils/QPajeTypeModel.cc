@@ -83,7 +83,7 @@ QVariant QPajeTypeModel::data(const QModelIndex &index, int role) const
   if (type){
     switch (index.column()){
     case 0: return QVariant (QString::fromStdString (type->name())); break;
-    case 1: return QVariant (QString::fromStdString (type->nature())); break;
+    case 1: return QVariant (QString::fromStdString (type->kind())); break;
     }
   }else{
     switch (index.column()){
