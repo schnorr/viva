@@ -142,7 +142,15 @@ void VivaComposition::layout (void)
 
 void VivaComposition::draw (tp_point base)
 {
-  glTranslatef (base.x, base.y, 0);
+  glPushMatrix();
+
+  if (rotate){
+    glTranslatef (base.x-width/2, base.y-height/2, 0);
+    glRotatef (45, 0.0, 0.0, 1.0);
+
+  }else{
+    glTranslatef (base.x, base.y, 0);
+  }
 
   //fill my rectangle
   glColor3f (1.0, 1.0, 1.0);
@@ -169,7 +177,7 @@ void VivaComposition::draw (tp_point base)
   glVertex2f (width, 0);
   glEnd ();
 
-  glTranslatef (-base.x, -base.y, 0);
+  glPopMatrix ();
 }
 
 VivaNode::VivaNode (VivaGraph *filter, PajeContainer *container, config_setting_t *conf, void *layout)
