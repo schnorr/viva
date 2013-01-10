@@ -19,9 +19,6 @@ from the [CAPES/Cofecub](http://www.capes.gov.br),
 the tool is developed as part of the french [INFRA-SONGS ANR
 project](http://infra-songs.gforge.inria.fr/).
 
-__We are still polishing things before the first implementation push to
-this repository. Please, bear with us and check back soon__.
-
 Dependencies
 ------------
 
