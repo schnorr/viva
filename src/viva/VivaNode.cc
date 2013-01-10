@@ -51,6 +51,14 @@ VivaComposition::VivaComposition (VivaGraph *filter, PajeContainer *container, c
     throw "The 'values' field is not a list in configuration '"+name+"'";
   }
 
+  //deal with the type
+  std::string type_configuration (config_setting_get_string (type));
+  if (type_configuration == "rhombus" || type_configuration == "diamond"){
+    rotate = true;
+  }else{
+    rotate = false;
+  }
+
   //transform configuration
   std::string size_typename (config_setting_get_string (size));
   size_type = filter->entityTypeWithName (size_typename);
