@@ -365,6 +365,7 @@ void VivaGraph::timeSelectionChanged (void)
 {
   this->defineMaxForConfigurations ();
   this->layoutNodes ();
+  emit graphChanged ();
 }
 
 void VivaGraph::hierarchyChanged (void)
