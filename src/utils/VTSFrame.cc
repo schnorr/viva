@@ -146,7 +146,6 @@ void VTSFrame::timeSelectionChanged (void)
 {
   selectionStart = selectionStartTime();
   selectionEnd = selectionEndTime();
-  std::cout << "VTSFrame timeSelection (" << selectionStart << ", " << selectionEnd << ")"<< std::endl;
   updateGUI();
   PajeComponent::timeSelectionChanged();
 }
