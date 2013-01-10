@@ -70,4 +70,7 @@ private:
 public slots:
   void highlightNode (VivaNode *node);
   void unhighlightNode (void);
+
+protected:
+  void keyPressEvent (QKeyEvent *event);
 };
