@@ -5,7 +5,6 @@
 #include "PajeSimulator.h"
 #include "VivaGraph.h"
 
-
 VivaApplication::VivaApplication( int &argc, char **argv) : QApplication(argc,argv)
 {
   setApplicationName("Viva");
@@ -15,6 +14,9 @@ VivaApplication::VivaApplication( int &argc, char **argv) : QApplication(argc,ar
 
 void VivaApplication::init (void)
 {
+  tswindow = new VTSWindow ();
+  typeFilter = new QPajeTypeFilter ();
+
   PajeFileReader *reader = new PajeFileReader (filename.toStdString());
   PajeEventDecoder *decoder = new PajeEventDecoder ();
   PajeSimulator *simulator = new PajeSimulator ();
@@ -22,7 +24,9 @@ void VivaApplication::init (void)
 
   connectComponents (reader, decoder);
   connectComponents (decoder, simulator);
-  connectComponents (simulator, vivagraph);
+  connectComponents (simulator, typeFilter);
+  connectComponents (typeFilter, tswindow->frame);
+  connectComponents (tswindow->frame, vivagraph);
 
   {
     PajeThreadReader *thread = new PajeThreadReader (reader);
@@ -34,6 +38,8 @@ void VivaApplication::init (void)
 
   VivaWindow *vivaWindow = new VivaWindow (vivagraph);
   vivaWindow->show();
+  tswindow->show();
+  typeFilter->show();
 }
 
 void VivaApplication::connectComponents (PajeComponent *c1, PajeComponent *c2)
