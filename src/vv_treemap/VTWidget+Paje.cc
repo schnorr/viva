@@ -14,18 +14,28 @@
     You should have received a copy of the GNU Public License
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Qt>
-#include "VivaApplication.h"
+#include "VTWidget.h"
 
-int main(int argc, char **argv)
+void VTWidget::hierarchyChanged (void)
 {
-  QApplication::setAttribute( Qt::AA_X11InitThreads );
-  VivaApplication app(argc, argv);
-  try {
-    app.init();
-  }catch (std::string exception){
-    std::cout << "Exception: " << exception << std::endl;
-    return 1;
-  }
-  return app.exec();
+  recreate();
+  currentDepth = treemap->maxDepth()+1;
+  treemap->timeSelectionChanged ();
+  repopulate();
+  update();
+  PajeComponent::hierarchyChanged ();
+}
+
+void VTWidget::timeSelectionChanged (void)
+{
+  treemap->timeSelectionChanged();
+  repopulate ();
+  update();
+  PajeComponent::timeSelectionChanged ();
+}
+
+void VTWidget::dataChangedForEntityType (PajeType *type)
+{
+  hierarchyChanged ();
+  PajeComponent::dataChangedForEntityType (type);
 }

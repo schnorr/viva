@@ -1,39 +1,21 @@
+# This file is part of Viva
+#
+# Viva is free software: you can redistribute it and/or modify it
+# under the terms of the GNU Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Viva is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU Public License for more details.
+#
+# You should have received a copy of the GNU Public License
+# along with Viva. If not, see <http://www.gnu.org/licenses/>.
 CMAKE_MINIMUM_REQUIRED (VERSION 2.8)
 PROJECT(viva)
 SET(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 
-# Define sources, headers for all targets
-#
-# The Paje Library (libpaje)
-SET(LIBPAJE_HEADERS
-  src/libpaje/PajeColor.h
-  src/libpaje/PajeComponent.h
-  src/libpaje/PajeContainer.h
-  src/libpaje/PajeData.h
-  src/libpaje/PajeEntity.h
-  src/libpaje/PajeEventDecoder.h
-  src/libpaje/PajeEventDefinition.h
-  src/libpaje/PajeEvent.h
-  src/libpaje/PajeFileReader.h
-  src/libpaje/PajeObject.h
-  src/libpaje/PajeSimulator.h
-  src/libpaje/PajeTraceController.h
-  src/libpaje/PajeType.h)
-SET(LIBPAJE_SOURCES
-  src/libpaje/PajeEventDefinition.cc
-  src/libpaje/PajeEvent.cc
-  src/libpaje/PajeData.cc
-  src/libpaje/PajeFileReader.cc
-  src/libpaje/PajeEventDecoder.cc
-  src/libpaje/PajeSimulator.cc
-  src/libpaje/PajeSimulator+Queries.cc
-  src/libpaje/PajeSimulator+Commands.cc
-  src/libpaje/PajeTraceController.cc
-  src/libpaje/PajeComponent.cc
-  src/libpaje/PajeType.cc
-  src/libpaje/PajeContainer.cc
-  src/libpaje/PajeColor.cc
-  src/libpaje/PajeEntity.cc)
 #
 # The Tupi Library written in C (particle system)
 SET(LIBTUPI_HEADERS
@@ -49,125 +31,122 @@ SET(LIBTUPI_SOURCES
   src/libtupi/layout.c
   src/libtupi/node.c)
 #
-# Paje Validate (checks if a trace file is valid or not)
-SET(PAJEVALIDATE_SOURCES src/paje_validate/main.cc)
-#
-# Paje Dump
-SET(PAJEDUMP_SOURCES src/paje_dump/main.cc)
-#
 # Viva Sources
+SET(VIVA_HEADERS
+  src/viva/VivaWindow.h
+  src/viva/VivaGraphView.h
+  src/viva/VivaApplication.h
+  src/viva/VivaLayoutRunner.h
+  src/viva/VivaGraph.h
+  src/viva/VivaRenderingThread.h)
 SET(VIVA_SOURCES
   src/viva/main.cc
-  src/viva/basic.cc
-  src/viva/loadingbar.cc
-  src/viva/graphframe.cc
-  src/viva/timesliceframe.cc
-  src/viva/graphwindow.cc
-  src/viva/timeslicewindow.cc
+  src/viva/VivaWindow.cc
+  src/viva/VivaGraphView.cc
+  src/viva/VivaApplication.cc
+  src/viva/VivaLayoutRunner.cc
   src/viva/VivaGraph.cc
   src/viva/VivaNode.cc
-  src/viva/TimeInterval.cc)
+  src/viva/VivaRenderingThread.cc)
+SET(VIVA_RESOURCES
+  src/viva/VivaResource.qrc)
 
 #
+# Treemap sources
+SET(TREEMAP_HEADERS
+  src/vv_treemap/VTApplication.h
+  src/vv_treemap/VTFrame.h
+  src/vv_treemap/VTWindow.h
+  src/vv_treemap/VTWidget.h)
+SET(TREEMAP_SOURCES
+  src/vv_treemap/main.cc
+  src/vv_treemap/VTApplication.cc
+  src/vv_treemap/VTFrame.cc
+  src/vv_treemap/VTWindow.cc
+  src/vv_treemap/VTWidget.cc
+  src/vv_treemap/VTWidget+Paje.cc
+  src/vv_treemap/VTWidget+Treemap.cc
+  src/vv_treemap/PajeTreemap.cc)
+
+#
+# Utils (Qt-based) sources
+SET(UTILS_HEADERS
+  src/utils/VTSFrame.h
+  src/utils/VTSWindow.h
+  src/utils/QPajeTypeModel.h
+  src/utils/QPajeTypeFilter.h)
+SET(UTILS_SOURCES
+  src/utils/VTSFrame.cc
+  src/utils/VTSWindow.cc
+  src/utils/QPajeTypeModel.cc
+  src/utils/QPajeTypeFilter.cc)
+
 # the cmake options
-#
-OPTION(PAJE_LIBRARY "The Paje library with all the basic components" ON)
-OPTION(PAJE_DUMP    "Compile pj_dump (program to dump the contents of a trace" ON)
-OPTION(PAJE_VALIDATE "Compile pj_validate (program to validate a trace" ON)
-OPTION(TUPI_LIBRARY "The interactive Barnes-Hut particle system library" OFF)
-OPTION(VIVA         "Compile viva (a hierarchical graph visualization tool" OFF)
+OPTION(VIVA         "The Viva visualization tool (Qt4 version)" ON)
+OPTION(VV_TREEMAP      "The vv_treemap visualization tool" OFF)
+
+FIND_PACKAGE(Qt4 REQUIRED QtCore QtGui QtOpenGl)
+FIND_PACKAGE(GLUT REQUIRED)
+FIND_PACKAGE(OpenGL REQUIRED)
+FIND_PACKAGE(LibConfig REQUIRED)
+FIND_PACKAGE(PajeNG REQUIRED)
 
 #
-# The Paje Library (libpaje)
-# 
-IF(PAJE_LIBRARY)
-  FIND_PACKAGE(Boost REQUIRED)
-  ADD_LIBRARY(paje_library SHARED ${LIBPAJE_SOURCES})
-  INCLUDE_DIRECTORIES(paje_library ${Boost_INCLUDE_DIR})
-  SET_TARGET_PROPERTIES(paje_library PROPERTIES OUTPUT_NAME paje)
-  SET_TARGET_PROPERTIES(paje_library PROPERTIES
-    # bump when new function are added in the library
-    VERSION 1.0
-    # bump when ABI is broken (symbols removed or parameters changed)
-    SOVERSION 1)
-  # bump when the API change (new functions in the header file)
-  SET(LIBPAJE_APIVERSION 1)
-  INSTALL(TARGETS paje_library DESTINATION lib)
-  INSTALL(FILES ${LIBPAJE_HEADERS} DESTINATION include)
-ENDIF(PAJE_LIBRARY)
-
-#
-# The Tupi Library written in C (particle system)
-# 
-IF(TUPI_LIBRARY)
-  ADD_LIBRARY(tupi_library SHARED ${LIBTUPI_SOURCES})
-  SET_TARGET_PROPERTIES(tupi_library PROPERTIES OUTPUT_NAME tupi)
-  TARGET_LINK_LIBRARIES(tupi_library m)
-  SET_TARGET_PROPERTIES(tupi_library PROPERTIES
-    # bump when new function are added in the library
-    VERSION 1.0
-    # bump when ABI is broken (symbols removed or parameters changed)
-    SOVERSION 1)
-  # bump when the API change (new functions in the header file)
-  SET(LIBTUPI_APIVERSION 1)
-  INSTALL(TARGETS tupi_library DESTINATION lib)
-  INSTALL(FILES ${LIBTUPI_HEADERS} DESTINATION include)
-ENDIF(TUPI_LIBRARY)
-
-#
-# Paje Validate (checks if a trace file is valid or not)
-#
-IF(PAJE_VALIDATE)
-  IF(NOT PAJE_LIBRARY)
-    MESSAGE(FATAL_ERROR "You must enable PAJE_LIBRARY to compile pj_validate")
-  ENDIF(NOT PAJE_LIBRARY)
-  ADD_EXECUTABLE(pj_validate ${PAJEVALIDATE_SOURCES})
-  INCLUDE_DIRECTORIES (pj_validate ${PROJECT_SOURCE_DIR}/src/libpaje/)
-  TARGET_LINK_LIBRARIES(pj_validate paje_library)
-  INSTALL(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/pj_validate DESTINATION bin)
-ENDIF(PAJE_VALIDATE)
-
-#
-# Paje Dump
-#
-IF(PAJE_DUMP)
-  IF(NOT PAJE_LIBRARY)
-    MESSAGE(FATAL_ERROR "You must enable PAJE_LIBRARY to compile pj_dump")
-  ENDIF(NOT PAJE_LIBRARY)
-  ADD_EXECUTABLE(pj_dump ${PAJEDUMP_SOURCES})
-  INCLUDE_DIRECTORIES (pj_dump ${PROJECT_SOURCE_DIR}/src/libpaje/)
-  TARGET_LINK_LIBRARIES(pj_dump paje_library)
-  INSTALL(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/pj_dump DESTINATION bin)
-ENDIF(PAJE_DUMP)
-
-#
-# Viva Sources
+# VIVA
 #
 IF(VIVA)
-  IF(NOT PAJE_LIBRARY)
-    MESSAGE(FATAL_ERROR "You must enable PAJE_LIBRARY to compile viva")
-  ENDIF(NOT PAJE_LIBRARY)
-  IF(NOT TUPI_LIBRARY)
-    MESSAGE(FATAL_ERROR "You must enable TUPI_LIBRARY to compile viva")
-  ENDIF(NOT TUPI_LIBRARY)
+  QT4_WRAP_CPP(VIVA_HEADERS_MOC ${VIVA_HEADERS})
+  QT4_ADD_RESOURCES(VIVA_RESOURCES_RCC ${VIVA_RESOURCES})
+  INCLUDE(${QT_USE_FILE})
+  ADD_DEFINITIONS(${QT_DEFINITIONS})
+  INCLUDE_DIRECTORIES(viva ${PROJECT_SOURCE_DIR}/src/libtupi/)
+  INCLUDE_DIRECTORIES(viva src/utils/)
+  INCLUDE_DIRECTORIES(viva ${PAJENG_INCLUDE_PATH})
+  LINK_DIRECTORIES (${PAJENG_LIBRARY_PATH})
 
-  FIND_PACKAGE(wxWidgets COMPONENTS gl core base REQUIRED)
-  FIND_PACKAGE(OpenGL REQUIRED)
-  FIND_PACKAGE(LibConfig REQUIRED)
-  FIND_PACKAGE(GTK2 REQUIRED)
-  FIND_PACKAGE(GLUT REQUIRED)
-
-  ADD_EXECUTABLE(viva ${VIVA_SOURCES})
-  include_directories(viva ${GTK2_INCLUDE_DIRS})
-  include_directories(viva ${Cairo_INCLUDE_DIRS})
-  include_directories(viva ${PROJECT_SOURCE_DIR}/src/libtupi/)
-  include_directories(viva ${PROJECT_SOURCE_DIR}/src/libpaje/)
-  include(${wxWidgets_USE_FILE})
-  target_link_libraries(viva ${wxWidgets_LIBRARIES} ${GLUT_glut_LIBRARY} ${OPENGL_gl_LIBRARY} ${OPENGL_glu_LIBRARY} ${Cairo_LIBRARIES} ${GTK2_LIBRARIES} ${LIBCONFIG_LIBRARIES} tupi_library paje_library )
+  ADD_EXECUTABLE(viva
+    ${LIBTUPI_SOURCES}
+    ${VIVA_SOURCES}
+    ${VIVA_HEADERS_MOC}
+    ${VIVA_RESOURCES_RCC})
+  TARGET_LINK_LIBRARIES(viva ${QT_LIBRARIES})
+  TARGET_LINK_LIBRARIES(viva ${GLUT_glut_LIBRARY})
+  TARGET_LINK_LIBRARIES(viva ${OPENGL_gl_LIBRARY})
+  TARGET_LINK_LIBRARIES(viva ${OPENGL_glu_LIBRARY})
+  TARGET_LINK_LIBRARIES(viva ${LIBCONFIG_LIBRARIES})
+  TARGET_LINK_LIBRARIES(viva paje)
+  TARGET_LINK_LIBRARIES(viva pajeutils)
+  TARGET_LINK_LIBRARIES(viva viva_utils_library)
   INSTALL(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/viva DESTINATION bin)
 ENDIF(VIVA)
 
 #
-# For pkgconfig
+# TREEMAP
 #
-ADD_SUBDIRECTORY(pkgconfig)
+IF(VV_TREEMAP)
+  QT4_WRAP_CPP(TREEMAP_HEADERS_MOC ${TREEMAP_HEADERS})
+  QT4_ADD_RESOURCES(TREEMAP_RESOURCES_RCC ${TREEMAP_RESOURCES})
+  INCLUDE(${QT_USE_FILE})
+  ADD_DEFINITIONS(${QT_DEFINITIONS})
+  INCLUDE_DIRECTORIES(vv_treemap ${PAJENG_INCLUDE_PATH})
+  INCLUDE_DIRECTORIES(vv_treemap src/utils/)
+  LINK_DIRECTORIES (${PAJENG_LIBRARY_PATH})
+
+  ADD_EXECUTABLE(vv_treemap ${TREEMAP_SOURCES} ${TREEMAP_HEADERS_MOC} ${TREEMAP_RESOURCES_RCC})
+  TARGET_LINK_LIBRARIES(vv_treemap ${QT_LIBRARIES})
+  TARGET_LINK_LIBRARIES(vv_treemap ${GLUT_glut_LIBRARY})
+  TARGET_LINK_LIBRARIES(vv_treemap ${OPENGL_gl_LIBRARY})
+  TARGET_LINK_LIBRARIES(vv_treemap ${OPENGL_glu_LIBRARY})
+  TARGET_LINK_LIBRARIES(vv_treemap paje)
+  TARGET_LINK_LIBRARIES(vv_treemap pajeutils)
+  TARGET_LINK_LIBRARIES(vv_treemap viva_utils_library)
+  INSTALL(PROGRAMS ${CMAKE_CURRENT_BINARY_DIR}/vv_treemap DESTINATION bin)  
+ENDIF(VV_TREEMAP)
+
+#
+# Utils
+#
+QT4_WRAP_CPP(UTILS_HEADERS_MOC ${UTILS_HEADERS})
+ADD_LIBRARY(viva_utils_library SHARED ${UTILS_SOURCES} ${UTILS_HEADERS_MOC})
+SET_TARGET_PROPERTIES(viva_utils_library PROPERTIES OUTPUT_NAME vivautils)
+INSTALL(TARGETS viva_utils_library DESTINATION lib)

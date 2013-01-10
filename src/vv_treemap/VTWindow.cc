@@ -14,18 +14,26 @@
     You should have received a copy of the GNU Public License
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Qt>
-#include "VivaApplication.h"
+#include <QtGui>
+#include "VTWindow.h"
+#include "VTFrame.h"
 
-int main(int argc, char **argv)
+VTWindow::VTWindow (void)
 {
-  QApplication::setAttribute( Qt::AA_X11InitThreads );
-  VivaApplication app(argc, argv);
-  try {
-    app.init();
-  }catch (std::string exception){
-    std::cout << "Exception: " << exception << std::endl;
-    return 1;
+  frame = new VTFrame (this);
+
+  QHBoxLayout *mainLayout = new QHBoxLayout;
+  mainLayout->setMargin(0);
+  mainLayout->addWidget(frame);
+  setLayout(mainLayout);
+  setWindowTitle (tr("Treemap"));
+}
+
+void VTWindow::keyPressEvent(QKeyEvent *e)
+{
+  if (e->key() == Qt::Key_Escape){
+    qApp->exit(0);
+  }else{
+    QWidget::keyPressEvent(e);
   }
-  return app.exec();
 }

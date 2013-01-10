@@ -1,8 +1,8 @@
 /*
-    This file is part of Viva.
+    This file is part of Viva
 
-    Viva is free software: you can redistribute it and/or modify it
-    under the terms of the GNU Public License as published by
+    Viva is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Public License as published by
     the Free Software Foundation, either version 3 of the License, or
     (at your option) any later version.
 
@@ -14,18 +14,25 @@
     You should have received a copy of the GNU Public License
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Qt>
-#include "VivaApplication.h"
+#ifndef __VTS_WINDOW_H
+#define __VTS_WINDOW_H
+#include <QWidget>
 
-int main(int argc, char **argv)
+class VTSFrame;
+
+class VTSWindow : public QWidget
 {
-  QApplication::setAttribute( Qt::AA_X11InitThreads );
-  VivaApplication app(argc, argv);
-  try {
-    app.init();
-  }catch (std::string exception){
-    std::cout << "Exception: " << exception << std::endl;
-    return 1;
-  }
-  return app.exec();
-}
+  Q_OBJECT
+
+public:
+  VTSWindow (void);
+
+protected:
+  void keyPressEvent (QKeyEvent *event);
+
+public:
+  VTSFrame *frame;
+};
+
+
+#endif

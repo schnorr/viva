@@ -14,13 +14,12 @@
     You should have received a copy of the GNU Public License
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Qt>
-#include "VivaApplication.h"
+#include "VTApplication.h"
 
-int main(int argc, char **argv)
+int main(int argc, char *argv[])
 {
   QApplication::setAttribute( Qt::AA_X11InitThreads );
-  VivaApplication app(argc, argv);
+  VTApplication app(argc, argv);
   try {
     app.init();
   }catch (std::string exception){
