@@ -376,6 +376,10 @@ void VivaGraph::timeLimitsChanged (void)
 
 void VivaGraph::timeSelectionChanged (void)
 {
+  if (selectionEndTime () - selectionStartTime() == 0){
+    //there is nothing to draw since time slice is zero
+    return;
+  }
   this->defineMaxForConfigurations ();
   this->layoutNodes ();
   emit graphChanged ();
