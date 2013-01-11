@@ -159,13 +159,16 @@ void VivaComposition::draw (tp_point base)
   std::map<PajeType*,double>::iterator it;
   double yaccum = 0;
   for (it = proportion.begin(); it != proportion.end(); it++){
-    double size = (*it).second;
     PajeColor *color = filter->colorForEntityType ((*it).first);
+    double value = (*it).second;
+
+    double w = width;
+    double h = height * value;
 
     glColor3f (color->r, color->g, color->b);
-    glRectf (0, yaccum, width, -height * size);
+    glRectf (0, yaccum, w, -h + yaccum);
 
-    yaccum -= size;
+    yaccum -= h;
   }
 
   //dark thin border
