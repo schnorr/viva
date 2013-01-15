@@ -17,25 +17,23 @@ Licence](http://www.gnu.org/licenses/gpl.html) and is developed as
 part of the french [INFRA-SONGS ANR
 project](http://infra-songs.gforge.inria.fr/).
 
-### Dependencies
 
-Viva needs Qt, OpenGL, LibConfig, GLUT, Boost, and PajeNG.
+### Three-line Installation
 
-### Installation
-
-Just follow these steps:
-
-     $ git clone git@github.com:schnorr/viva.git
-     $ mkdir build
-     $ cd build
-     $ cmake ..
-     $ make
+     sudo apt-get install git cmake build-essential libboost-dev libconfig++-dev libconfig8-dev libgtk2.0-dev freeglut3-dev ;
+     # [Install PajeNG (instructions here)](https://github.com/schnorr/pajeng/wiki)
+     git clone git://github.com/schnorr/viva.git ; mkdir -p viva/b ; cd viva/b ; cmake .. ; make install
 
 ### How to run
 
 If you are in the build directory, just type:
 
      $ ./viva <trace_file.trace> <graph_configuration_file.plist>
+
+
+### Detailed Installation and everything else
+
+[Check the Viva's wiki](https://github.com/schnorr/viva/wiki/).
 
 ### Contact
 
