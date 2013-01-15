@@ -31,7 +31,7 @@ project](http://infra-songs.gforge.inria.fr/).
 If you are in the build directory, just type:
 
      $ ./viva <trace_file.trace> <graph_configuration_file.plist>
-
+     $ ./vv_treemap <trace_file.trace>
 
 ### Detailed Installation and everything else
 
