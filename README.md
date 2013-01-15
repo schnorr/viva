@@ -21,8 +21,10 @@ project](http://infra-songs.gforge.inria.fr/).
 ### Three-line Installation
 
      sudo apt-get install git cmake build-essential libboost-dev libconfig++-dev libconfig8-dev libgtk2.0-dev freeglut3-dev ;
-     # [Install PajeNG (instructions here)](https://github.com/schnorr/pajeng/wiki)
+     # Install PajeNG
      git clone git://github.com/schnorr/viva.git ; mkdir -p viva/b ; cd viva/b ; cmake .. ; make install
+
+[PajeNG Installation instructions](https://github.com/schnorr/pajeng/wiki)
 
 ### How to run
 
