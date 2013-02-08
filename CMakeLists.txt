@@ -83,7 +83,7 @@ SET(UTILS_SOURCES
 
 # the cmake options
 OPTION(VIVA         "The Viva visualization tool (Qt4 version)" ON)
-OPTION(VV_TREEMAP      "The vv_treemap visualization tool" OFF)
+OPTION(VV_TREEMAP      "The vv_treemap visualization tool" ON)
 
 FIND_PACKAGE(Qt4 REQUIRED QtCore QtGui QtOpenGl)
 FIND_PACKAGE(GLUT REQUIRED)
