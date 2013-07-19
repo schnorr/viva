@@ -16,9 +16,11 @@
 */
 #include <Qt>
 #include "VivaApplication.h"
+#include <GL/glut.h>
 
 int main(int argc, char **argv)
 {
+  glutInit (&argc, argv);
   QApplication::setAttribute( Qt::AA_X11InitThreads );
   VivaApplication app(argc, argv);
   try {

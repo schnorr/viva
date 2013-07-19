@@ -85,7 +85,7 @@ SET(UTILS_SOURCES
 
 # the cmake options
 OPTION(VIVA         "The Viva visualization tool (Qt4 version)" ON)
-OPTION(VV_TREEMAP      "The vv_treemap visualization tool" OFF)
+OPTION(VV_TREEMAP      "The vv_treemap visualization tool" ON)
 
 FIND_PACKAGE(Qt4 REQUIRED QtCore QtGui QtOpenGl)
 FIND_PACKAGE(GLUT REQUIRED)
@@ -152,3 +152,4 @@ QT4_WRAP_CPP(UTILS_HEADERS_MOC ${UTILS_HEADERS})
 ADD_LIBRARY(viva_utils_library SHARED ${UTILS_SOURCES} ${UTILS_HEADERS_MOC})
 SET_TARGET_PROPERTIES(viva_utils_library PROPERTIES OUTPUT_NAME vivautils)
 INSTALL(TARGETS viva_utils_library DESTINATION lib)
+INSTALL(FILES ${UTILS_HEADERS} DESTINATION include)

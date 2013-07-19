@@ -38,6 +38,7 @@ private:
   PajeType *size_type;
   std::string name;
   std::vector<PajeType*> values_type;
+  bool rotate;
 
 public:
   VivaComposition (VivaGraph *filter, PajeContainer *container, config_setting_t *configuration);

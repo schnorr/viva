@@ -82,7 +82,7 @@ void VivaGraphView::wheelEvent(QWheelEvent *event)
   render();
 }
 
-void VivaGraphView::keyPressEvent(QKeyEvent* event)
+void VivaGraphView::keyPressEvent(QKeyEvent *event)
 {
 }
 

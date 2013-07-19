@@ -320,3 +320,12 @@ void VivaWindow::unhighlightNode (void)
 {
   statusBar()->clearMessage();
 }
+
+void VivaWindow::keyPressEvent(QKeyEvent *e)
+{
+  if (e->key() == Qt::Key_Escape){
+    qApp->exit(0);
+  }else{
+    QWidget::keyPressEvent(e);
+  }
+}

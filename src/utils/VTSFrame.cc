@@ -135,11 +135,19 @@ void VTSFrame::sizeCheckChanged (int state)
 
 void VTSFrame::startSizeSliderReleased (int value)
 {
+  double traceTime = endTime();
+
   double selected_start = (double)startSlider->value()/(double)INT_MAX;
   double selected_size = (double)sizeSlider->value()/(double)INT_MAX;
-  double start = endTime() * selected_start;
-  double size = (endTime() - start) * selected_size;
-  setSelectionStartEndTime (start, start+size);
+
+  double start = traceTime * selected_start;
+  double size = traceTime * selected_size;
+  double end = start + size;
+  if (end > traceTime){
+    end = traceTime;
+  }
+
+  setSelectionStartEndTime (start, end);
 }
 
 void VTSFrame::timeSelectionChanged (void)

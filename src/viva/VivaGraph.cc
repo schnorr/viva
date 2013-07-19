@@ -17,6 +17,14 @@
 #include "VivaGraph.h"
 #include "PajeEntity.h"
 #include "PajeType.h"
+#include <GL/glut.h>
+
+static void drawString (const char *s, float x, float y, float z){
+  unsigned int i;
+  glRasterPos3f(x, y, z);
+  for (i = 0; i < strlen (s); i++)
+    glutBitmapCharacter (GLUT_BITMAP_HELVETICA_18, s[i]);
+}
 
 VivaGraph::VivaGraph (std::string conffile)
 {
@@ -68,6 +76,11 @@ void VivaGraph::setView (VivaGraphView *view)
 
 void VivaGraph::draw (void)
 {
+  if (selectionEndTime() - selectionStartTime() == 0){
+    drawString ("Nothing to draw", 0, 0, 0);
+    return;
+  }
+
   //draw edges, then the nodes
   std::vector<VivaNode*>::iterator it;
   for (it = nodes.begin(); it != nodes.end(); it++){
@@ -363,6 +376,10 @@ void VivaGraph::timeLimitsChanged (void)
 
 void VivaGraph::timeSelectionChanged (void)
 {
+  if (selectionEndTime () - selectionStartTime() == 0){
+    //there is nothing to draw since time slice is zero
+    return;
+  }
   this->defineMaxForConfigurations ();
   this->layoutNodes ();
   emit graphChanged ();

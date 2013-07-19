@@ -51,6 +51,14 @@ VivaComposition::VivaComposition (VivaGraph *filter, PajeContainer *container, c
     throw "The 'values' field is not a list in configuration '"+name+"'";
   }
 
+  //deal with the type
+  std::string type_configuration (config_setting_get_string (type));
+  if (type_configuration == "rhombus" || type_configuration == "diamond"){
+    rotate = true;
+  }else{
+    rotate = false;
+  }
+
   //transform configuration
   std::string size_typename (config_setting_get_string (size));
   size_type = filter->entityTypeWithName (size_typename);
@@ -134,7 +142,15 @@ void VivaComposition::layout (void)
 
 void VivaComposition::draw (tp_point base)
 {
-  glTranslatef (base.x, base.y, 0);
+  glPushMatrix();
+
+  if (rotate){
+    glTranslatef (base.x-width/2, base.y-height/2, 0);
+    glRotatef (45, 0.0, 0.0, 1.0);
+
+  }else{
+    glTranslatef (base.x, base.y, 0);
+  }
 
   //fill my rectangle
   glColor3f (1.0, 1.0, 1.0);
@@ -143,13 +159,16 @@ void VivaComposition::draw (tp_point base)
   std::map<PajeType*,double>::iterator it;
   double yaccum = 0;
   for (it = proportion.begin(); it != proportion.end(); it++){
-    double size = (*it).second;
     PajeColor *color = filter->colorForEntityType ((*it).first);
+    double value = (*it).second;
+
+    double w = width;
+    double h = height * value;
 
     glColor3f (color->r, color->g, color->b);
-    glRectf (0, yaccum, width, -height * size);
+    glRectf (0, yaccum, w, -h + yaccum);
 
-    yaccum -= size;
+    yaccum -= h;
   }
 
   //dark thin border
@@ -161,7 +180,7 @@ void VivaComposition::draw (tp_point base)
   glVertex2f (width, 0);
   glEnd ();
 
-  glTranslatef (-base.x, -base.y, 0);
+  glPopMatrix ();
 }
 
 VivaNode::VivaNode (VivaGraph *filter, PajeContainer *container, config_setting_t *conf, void *layout)
