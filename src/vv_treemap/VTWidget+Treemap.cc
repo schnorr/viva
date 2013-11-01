@@ -38,6 +38,10 @@ void VTWidget::drawTreemap (QPainter *painter, PajeTreemap *t)
     std::vector<PajeTreemap*> valueChildren = t->valueChildren();
     for (it = valueChildren.begin(); it != valueChildren.end(); it++){
       PajeColor *color = (*it)->type()->color();
+      if (!color){
+	std::cout << "There is no color defined for type " << (*it)->type()->name() << std::endl;
+	exit(1);
+      }
       QBrush brush = QBrush (QColor (color->r*255, color->g*255, color->b*255, color->a*255));
       painter->fillRect ((*it)->rect(), brush);
     }
