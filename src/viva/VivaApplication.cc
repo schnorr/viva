@@ -18,7 +18,8 @@ void VivaApplication::init (void)
   typeFilter = new QPajeTypeFilter ();
 
   PajeFileReader *reader = new PajeFileReader (filename.toStdString());
-  PajeEventDecoder *decoder = new PajeEventDecoder ();
+  PajeDefinitions *definitions= new PajeDefinitions(true);
+  PajeEventDecoder *decoder = new PajeEventDecoder (definitions);
   PajeSimulator *simulator = new PajeSimulator ();
   VivaGraph *vivagraph = new VivaGraph (configuration.toStdString());
 

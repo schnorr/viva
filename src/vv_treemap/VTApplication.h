@@ -33,6 +33,7 @@ class VTApplication : public QApplication
   
 private:
   PajeFileReader *reader;
+  PajeDefinitions *definitions;
   PajeEventDecoder *decoder;
   PajeSimulator *simulator;
   QPajeTypeFilter *typeFilter;

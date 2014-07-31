@@ -41,7 +41,8 @@ void VTApplication::init (void)
   }else{
     reader = new PajeFileReader (filename.toStdString());
   }
-  decoder = new PajeEventDecoder ();
+  definitions= new PajeDefinitions(true);
+  decoder = new PajeEventDecoder (definitions);
   simulator = new PajeSimulator ();
 
   connectComponents (reader, decoder);
