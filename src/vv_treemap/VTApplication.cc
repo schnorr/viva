@@ -21,13 +21,10 @@
 #include <VTSWindow.h>
 #include <VTSFrame.h>
 
-VTApplication::VTApplication( int &argc, char **argv) : QApplication(argc,argv)
+VTApplication::VTApplication(struct arguments *args, int &argc, char **argv) : QApplication(argc,argv)
 {
-  setApplicationName("");
-  filename.clear();
-  if (arguments().count() > 1){
-    filename = arguments().at(1);
-  }
+  setApplicationName("vv_treemap");
+  this->args = args;
 }
 
 void VTApplication::init (void)
@@ -36,14 +33,14 @@ void VTApplication::init (void)
   tswindow = new VTSWindow ();
   typeFilter = new QPajeTypeFilter ();
 
-  if (filename.isEmpty()){
+  if (args->input_size == 0){
     reader = new PajeFileReader ();
   }else{
-    reader = new PajeFileReader (filename.toStdString());
+    reader = new PajeFileReader (std::string(args->input[0]));
   }
-  definitions= new PajeDefinitions(true);
+  definitions= new PajeDefinitions(args->noStrict == 1? false : true);
   decoder = new PajeEventDecoder (definitions);
-  simulator = new PajeSimulator ();
+  simulator = new PajeSimulator (args->stopat, args->ignoreIncompleteLinks);
 
   connectComponents (reader, decoder);
   connectComponents (decoder, simulator);

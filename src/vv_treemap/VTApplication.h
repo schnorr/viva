@@ -24,6 +24,16 @@
 #include "PajeSimulator.h"
 #include <QPajeTypeFilter.h>
 
+#define VALIDATE_INPUT_SIZE 1
+struct arguments {
+  char *input[VALIDATE_INPUT_SIZE];
+  double stopat;
+  int noStrict;
+  int input_size;
+  int ignoreIncompleteLinks;
+  int flex;
+};
+
 class VTWindow;
 class VTSWindow;
 
@@ -32,6 +42,7 @@ class VTApplication : public QApplication
   Q_OBJECT;
   
 private:
+  struct arguments *args;
   PajeFileReader *reader;
   PajeDefinitions *definitions;
   PajeEventDecoder *decoder;
@@ -45,7 +56,7 @@ private:
   void connectComponents (PajeComponent *c1, PajeComponent *c2);
 
 public:
-  VTApplication (int &argc, char **argv);
+  VTApplication (struct arguments *arguments, int &argc, char **argv);
   void init (void);
 };
 #endif
