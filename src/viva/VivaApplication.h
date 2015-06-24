@@ -6,6 +6,12 @@
 #include "VivaWindow.h"
 #include "PajeComponent.h"
 
+#define VALIDATE_INPUT_SIZE 2
+struct arguments {
+  char *input[VALIDATE_INPUT_SIZE];
+  int input_size;
+};
+
 class VivaApplication : public QApplication
 {
   Q_OBJECT
@@ -20,6 +26,6 @@ private:
   VTSWindow *tswindow;
 
 public:
-  VivaApplication ( int & argc, char ** argv );
+  VivaApplication ( int & argc, char ** argv, const struct arguments *args );
   void init (void);
 };

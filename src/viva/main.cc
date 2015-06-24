@@ -19,12 +19,6 @@
 #include <GL/glut.h>
 #include <argp.h>
 
-#define VALIDATE_INPUT_SIZE 2
-struct arguments {
-  char *input[VALIDATE_INPUT_SIZE];
-  int input_size;
-};
-
 static char doc[] = "Interactive and dynamic graph visualization of a Paje trace file";
 static char args_doc[] = "<TRACEFILE> <VIVA_CONFIGURATION>";
 
@@ -68,7 +62,7 @@ int main(int argc, char **argv)
 
   glutInit (&argc, argv);
   QApplication::setAttribute( Qt::AA_X11InitThreads );
-  VivaApplication app(argc, argv);
+  VivaApplication app(argc, argv, &arguments);
   try {
     app.init();
   }catch (std::string exception){

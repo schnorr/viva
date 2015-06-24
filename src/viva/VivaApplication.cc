@@ -5,11 +5,11 @@
 #include "PajeSimulator.h"
 #include "VivaGraph.h"
 
-VivaApplication::VivaApplication( int &argc, char **argv) : QApplication(argc,argv)
+VivaApplication::VivaApplication( int &argc, char **argv, const struct arguments *args) : QApplication(argc,argv)
 {
   setApplicationName("Viva");
-  filename = arguments().at(1);
-  configuration = arguments().at(2);
+  filename = QString(args->input[0]);
+  configuration = QString(args->input[1]);
 }
 
 void VivaApplication::init (void)
