@@ -17,9 +17,55 @@
 #include <Qt>
 #include "VivaApplication.h"
 #include <GL/glut.h>
+#include <argp.h>
+
+#define VALIDATE_INPUT_SIZE 2
+struct arguments {
+  char *input[VALIDATE_INPUT_SIZE];
+  int input_size;
+};
+
+static char doc[] = "Interactive and dynamic graph visualization of a Paje trace file";
+static char args_doc[] = "<TRACEFILE> <VIVA_CONFIGURATION>";
+
+static struct argp_option options[] = {
+  { 0 }
+};
+
+static error_t parse_options (int key, char *arg, struct argp_state *state)
+{
+  struct arguments *arguments = (struct arguments*)(state->input);
+  switch (key){
+  case ARGP_KEY_ARG:
+    if (arguments->input_size == VALIDATE_INPUT_SIZE) {
+      /* Too many arguments. */
+      argp_usage (state);
+    }
+    arguments->input[state->arg_num] = arg;
+    arguments->input_size++;
+    break;
+  case ARGP_KEY_END:
+    if (state->arg_num < VALIDATE_INPUT_SIZE) {
+      /* Not enough arguments. */
+      argp_usage (state);
+    }
+    break;
+  default: return ARGP_ERR_UNKNOWN;
+  }
+  return 0;
+}
+
+static struct argp argp = { options, parse_options, args_doc, doc };
 
 int main(int argc, char **argv)
 {
+  struct arguments arguments;
+  bzero (&arguments, sizeof(struct arguments));
+  if (argp_parse (&argp, argc, argv, 0, 0, &arguments) == ARGP_KEY_ERROR){
+    fprintf(stderr, "%s, error during the parsing of parameters\n", argv[0]);
+    return 1;
+  }
+
   glutInit (&argc, argv);
   QApplication::setAttribute( Qt::AA_X11InitThreads );
   VivaApplication app(argc, argv);
