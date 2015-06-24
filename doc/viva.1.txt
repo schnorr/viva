@@ -1,0 +1,91 @@
+VIVA(1)
+=======
+:doctype: manpage
+
+NAME
+----
+viva - Interactive and dynamic graph visualization of a Paje trace file
+
+
+SYNOPSIS
+--------
+*viva* ['OPTIONS'] <TRACEFILE> <VIVA_CONFIGURATION>
+
+
+DESCRIPTION
+-----------
+
+The viva(1) command displays a dynamic, interactive and hierarchical
+graph visualization of a Paje trace file. Dynamic because it uses a
+scalable barnes-hut graph positioning algorithm provided by libtupi,
+bundled within viva. Interactive because the visualizaton allows the
+user to interact with the graph, either by moving nodes positions or
+changing the time frame considered to draw its temporal data. And
+hierarchical because the graph exposes the internal organization of
+the Paje trace file. Viva is a particularly useful program to
+correlate the behavior of parallel and distributed applications with
+the underlying network topology, by mapping this behavior to visual
+elements of the graph representation (size of nodes, edges, and so
+on). A good analysis using viva depends directly to the configuration
+file provided as second parameter (see INPUT DESCRIPTION section for
+details).
+
+OPTIONS
+-------
+
+*viva* accepts the following options:    
+
+*-?, --help*::
+    Show all the available options.
+
+*--usage*::
+    Give a short usage message.
+
+INPUT DESCRIPTION
+-----------------
+
+The viva(1) command expects two parameters: the first one is a trace
+file that follows the Paje file format (as described in the PDF
+document listed in the RESOURCES section of this page). The second is
+a viva configuration file with a syntax similar to property lists, a
+simple textual format. This configuration file is used to map the
+contents of the Paje trace file to the graph visualizaton
+construction. If these two obligatory parameters are not provided,
+viva(1) stops with a usage message.
+
+Viva Configuration File
+~~~~~~~~~~~~~~~~~~~~~~~
+
+Forthcoming. See the examples directory in the meanwhile.
+
+OUTPUT DESCRIPTION
+------------------
+
+Forthcoming.
+
+RESOURCES
+---------
+
+Description of the Paje trace file:
+<http://paje.sourceforge.net/download/publication/lang-paje.pdf>
+
+Main web site:
+<http://github.com/schnorr/viva/>
+
+
+REPORTING BUGS
+--------------
+
+Report viva bugs and issues to <http://github.com/schnorr/viva/issues>
+
+
+COPYRIGHT
+---------
+
+Copyright \(C) 2012-2015 Lucas M. Schnorr. Free use of this software is granted under the terms of the GNU General Public License (GPL).
+
+
+SEE ALSO
+--------
+
+*pj_dump(1)* *pj_validate(1)*
