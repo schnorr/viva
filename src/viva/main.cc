@@ -15,6 +15,7 @@
     along with Viva. If not, see <http://www.gnu.org/licenses/>.
 */
 #include <Qt>
+#include <PajeException.h>
 #include "VivaApplication.h"
 #include <GL/glut.h>
 #include <argp.h>
@@ -68,6 +69,8 @@ int main(int argc, char **argv)
   }catch (std::string exception){
     std::cout << "Exception: " << exception << std::endl;
     return 1;
+  }catch (PajeException& exception){
+    exception.reportAndExit ();
   }
   return app.exec();
 }
