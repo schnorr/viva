@@ -2,7 +2,7 @@ cmake_policy(SET CMP0050 OLD)
 add_custom_target(man ALL)
 find_package(ASCIIDoc REQUIRED)
 
-foreach (_INPUT viva.1.txt)
+foreach (_INPUT viva.1.txt vv_treemap.1.txt)
   string(REPLACE "." ";" LIST ${_INPUT})
   list(REMOVE_ITEM LIST "txt")
   list(GET LIST 0 1 VAR)

@@ -1,0 +1,91 @@
+VV_TREEMAP(1)
+=============
+:doctype: manpage
+
+NAME
+----
+vv_treemap - Interactive and dynamic treemap visualization of a Paje trace file
+
+
+SYNOPSIS
+--------
+*vv_treemap* ['OPTIONS'] <TRACEFILE>
+
+
+DESCRIPTION
+-----------
+
+The vv_treemap(1) command displays a dynamic, interactive and
+hierarchical treemap visualization of a Paje trace file. It is dynamic
+since the user can change in runtime the time slices that should be
+applied to calculate the treemap. This interactivity is enhanced by
+enabling the selection of specific types and containers to be
+rendered. Most of the times, the user should do it in first place,
+since most of the metrics registered in traces are incompatible among
+them. Since the Paje trace file is naturally hierarchical (see the
+trace format description for details), vv_treemap reflects that in the
+representation: the user can change the level of details by using the
+mouse scroll within the main window. The vv_treemap tool is a
+particularly useful program to compare the behavior of
+processes/threads (containers) on different time scales. If wisely
+used, it can be show the imbalances that might occur in a parallel
+application, for instance.  A good analysis using vv_treemap depends
+on the dynamic selection of performance metrics along with a good time
+slice configuration.
+
+OPTIONS
+-------
+
+*vv_treemap* accepts the following options:    
+
+*-a, --stop-at=TIME*::
+    Stop the trace simulation at TIME. This way the user won't have to
+    wait until the complete trace is loaded (and simulated) into
+    memory.
+
+*-f, --flex*::
+    Use a flex-based file reader. The flex reader of PajeNG framework
+    can be used in vv_treemap to allow an alternative way of reading
+    trace files. In some rare situations, it might be faster to read
+    trace files with this option.
+
+*-n, --no-strict*::
+    Support old file names in event definitions.
+
+*-z, --ignore-incomplete-links*::
+    Tells the PajeNG simulator to ignore incomplete links. Only use if
+    you know what you are doing, since most of the times, incomplete
+    links indicate a corrupted or malformed trace file.
+
+*-?, --help*::
+    Show all the available options.
+
+*--usage*::
+    Give a short usage message.
+
+RESOURCES
+---------
+
+Description of the Paje trace file:
+<http://paje.sourceforge.net/download/publication/lang-paje.pdf>
+
+Main web site:
+<http://github.com/schnorr/viva/>
+
+
+REPORTING BUGS
+--------------
+
+Report viva bugs and issues to <http://github.com/schnorr/viva/issues>
+
+
+COPYRIGHT
+---------
+
+Copyright \(C) 2012-2015 Lucas M. Schnorr. Free use of this software is granted under the terms of the GNU General Public License (GPL).
+
+
+SEE ALSO
+--------
+
+*viva(1)* *pj_dump(1)* *pj_validate(1)*
