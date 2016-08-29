@@ -71,11 +71,13 @@ SET(TREEMAP_SOURCES
 #
 # Utils (Qt-based) sources
 SET(UTILS_HEADERS
+  src/utils/PajeThreadReader.h
   src/utils/VTSFrame.h
   src/utils/VTSWindow.h
   src/utils/QPajeTypeModel.h
   src/utils/QPajeTypeFilter.h)
 SET(UTILS_SOURCES
+  src/utils/PajeThreadReader.cc
   src/utils/VTSFrame.cc
   src/utils/VTSWindow.cc
   src/utils/QPajeTypeModel.cc
