@@ -39,4 +39,4 @@ If you are in the build directory, just type:
 
 ### Contact
 
-For more information, contact the author at: schnorr@gmail.com
+For more information, contact the author.
